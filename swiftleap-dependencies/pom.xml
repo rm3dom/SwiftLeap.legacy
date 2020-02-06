@@ -16,6 +16,17 @@
     <description>Parent pom for all SwiftLeap projects.</description>
     <inceptionYear>2019</inceptionYear>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>mavenrepo.swiftleap.com</id>
+            <url>s3://mavenrepo.swiftleap.com/snapshot</url>
+        </snapshotRepository>
+        <repository>
+            <id>mavenrepo.swiftleap.com</id>
+            <url>s3://mavenrepo.swiftleap.com/release</url>
+        </repository>
+    </distributionManagement>
+
     <repositories>
         <repository>
             <id>central</id>
