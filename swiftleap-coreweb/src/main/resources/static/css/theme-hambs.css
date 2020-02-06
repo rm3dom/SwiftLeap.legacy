@@ -1,0 +1,49 @@
+
+.login-group {
+    margin-left: auto;
+    margin-right: auto;
+    width: 430px;
+    border-radius: 4px;
+    margin-top: 5vh;
+}
+
+.login-panel {
+    margin: 0;
+    margin-top: 0;
+}
+
+.login-panel .login-content {
+    background-color: #eee;
+}
+
+.login-logo-top {
+    background: url(../img/hambs-logo.png) center no-repeat;
+    height: 100px;
+}
+
+.login-panel .login-head {
+    background-color: black;
+    color: white;
+    font-size: 14pt;
+    font-weight: bold;
+    padding: 10px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.tree .tree-group-label.selected a {
+    color: #1c722b;
+}
+
+.btn-primary {
+    background-color: #1EB53A;
+    border: 1px solid #218633;
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #218633;
+    border: 1px solid #1c722b;
+}

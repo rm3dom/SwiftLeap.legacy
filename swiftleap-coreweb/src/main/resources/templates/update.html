@@ -1,0 +1,31 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+
+<body>
+    <div style="text-align: center; margin-top: 40vh; color: #444;">
+        <h1>Updating, please wait...</h1>
+        You will be redirected shortly.<br/>
+        If the service does not restart, please check the operating system permissions.
+        <br/><br/>
+        <a href="/#">If you are not redirected, click here.</a>
+    </div>
+
+    <script type="text/javascript">
+        setInterval(function () {
+            var request;
+            if(window.XMLHttpRequest)
+                request = new XMLHttpRequest();
+            else
+                request = new ActiveXObject("Microsoft.XMLHTTP");
+            request.open('GET', 'update.html?refresh=refresh', false);
+            request.send();
+            if (request.status >= 200 && request.status < 400) {
+                setTimeout(function(){ window.location = "update.html?refresh=refresh"; }, 2000);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

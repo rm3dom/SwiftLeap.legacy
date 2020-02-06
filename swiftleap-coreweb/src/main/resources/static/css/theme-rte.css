@@ -1,0 +1,68 @@
+
+.login-group {
+    margin-left: auto;
+    margin-right: auto;
+    width: 430px;
+    border-radius: 4px;
+    margin-top: 1vh;
+}
+
+.login-panel {
+    margin: 0;
+    margin-top: 0;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 1);
+}
+
+.login-panel .login-content {
+    background-color: #4f5e71;
+    color: white;
+}
+
+.login-logo-top {
+    background: url(../img/rte-logo.png) center no-repeat;
+    background-size: 350px;
+    height: 150px;
+}
+
+.login-logo-bottom {
+    margin-top: 10px;
+    background: url(../img/phd-logo.png) center no-repeat;
+    background-size: 200px;
+    height: 60px;
+}
+
+
+.login-panel .login-head {
+    background-color: #8A0052;
+    color: white;
+    font-size: 14pt;
+    font-weight: bold;
+    padding: 10px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+
+.navbar-inverse {
+    background-color: #222;
+    border-color: #080808;
+}
+
+.tree .tree-group-label.selected a {
+    color: #8A0052;
+}
+
+.btn-primary {
+    background-color: #882861;
+    border: 1px solid #5e0038;
+}
+
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #651d48;
+    border: 1px solid #5e0038;
+}
+

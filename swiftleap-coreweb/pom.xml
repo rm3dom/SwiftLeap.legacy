@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.swiftleap</groupId>
+        <artifactId>swiftleap</artifactId>
+        <version>1.0.2.RELEASE</version>
+    </parent>
+
+    <artifactId>swiftleap-coreweb</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.swiftleap</groupId>
+            <artifactId>swiftleap-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.swiftleap</groupId>
+            <artifactId>swiftleap-party</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.swiftleap</groupId>
+            <artifactId>swiftleap-elm-core</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.swiftleap</groupId>
+                                    <artifactId>swiftleap-elm-core</artifactId>
+                                    <version>${project.version}</version>
+                                    <outputDirectory>${project.build.directory}/generated-sources/elm</outputDirectory>
+                                    <includes>**</includes>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>org.jetbrains.kotlin</groupId>
+                                    <artifactId>kotlin-stdlib-js</artifactId>
+                                    <version>${kotlin.version}</version>
+                                    <outputDirectory>${jslib.build.dir}</outputDirectory>
+                                    <includes>**/*.js</includes>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>org.jetbrains.kotlinx</groupId>
+                                    <artifactId>kotlinx-html-js</artifactId>
+                                    <version>${kotlinx-html.version}</version>
+                                    <outputDirectory>${jslib.build.dir}</outputDirectory>
+                                    <includes>**/*.js</includes>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>org.jetbrains</groupId>
+                                    <artifactId>kotlin-react</artifactId>
+                                    <version>${kotlin-react.version}</version>
+                                    <outputDirectory>${jslib.build.dir}</outputDirectory>
+                                    <includes>**/*.js</includes>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>org.jetbrains</groupId>
+                                    <artifactId>kotlin-react-dom</artifactId>
+                                    <version>${kotlin-react.version}</version>
+                                    <outputDirectory>${jslib.build.dir}</outputDirectory>
+                                    <includes>**/*.js</includes>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>org.jetbrains</groupId>
+                                    <artifactId>kotlin-extensions</artifactId>
+                                    <version>${kotlin-extensions.version}</version>
+                                    <outputDirectory>${jslib.build.dir}</outputDirectory>
+                                    <includes>**/*.js</includes>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>org.jetbrains.kotlinx</groupId>
+                                    <artifactId>kotlinx-serialization-runtime-js</artifactId>
+                                    <version>${kotlinx-serialization.version}</version>
+                                    <outputDirectory>${jslib.build.dir}</outputDirectory>
+                                    <includes>**/*.js</includes>
+                                </artifactItem>
+
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>yuicompressor-maven-plugin</artifactId>
+                <version>1.5.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compress</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sourceDirectory>${jslib.build.dir}</sourceDirectory>
+                    <excludes>
+                        <exclude>**/*.min.js</exclude>
+                        <exclude>**/*.meta.js</exclude>
+                        <exclude>**/*bootstrap*</exclude>
+                        <exclude>**/*jquery*</exclude>
+                        <exclude>**/*font*</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            -->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <configuration>
+                            <tasks>
+                                <!-- Compile Elm -->
+                                <exec
+                                        dir="${project.basedir}"
+                                        executable="${project.basedir}/make.sh"
+                                        failonerror="true">
+                                    <arg line="-no-color"/>
+                                </exec>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,1 @@
+ALTER TABLE sec_tenant ADD COLUMN  status integer not null DEFAULT 0;

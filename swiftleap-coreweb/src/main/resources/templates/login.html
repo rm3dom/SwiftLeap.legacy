@@ -1,0 +1,75 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${flags.siteName}">PHD-Admin</title>
+
+    <link rel="stylesheet" type="text/css"
+          th:attr="href=${flags.resourceUrl + 'fonts/font-awesome/css/font-awesome.min.css'}"/>
+    <link rel="stylesheet" type="text/css" th:attr="href=${flags.resourceUrl + 'lib/bootstrap/css/bootstrap.min.css'}"/>
+    <link rel="stylesheet" type="text/css"
+          th:attr="href=${flags.resourceUrl + 'css/core.css?version=' + flags.versionHash}"/>
+
+    <script type="text/javascript" th:attr="src=${flags.resourceUrl + 'lib/jquery/jquery-1.11.3.min.js'}"></script>
+    <script type="text/javascript" th:attr="src=${flags.resourceUrl + 'lib/bootstrap/js/bootstrap.min.js'}"></script>
+
+    <link rel="stylesheet" type="text/css"
+          th:attr="href=${flags.resourceUrl + 'css/theme-' + flags.themeName + '.css?version=' + flags.versionHash}"/>
+
+</head>
+
+<body>
+<div class="main-body">
+    <div  th:if="${!#strings.isEmpty(message)}"
+          th:text="${message}"
+          class="toast warn"
+          role="alert">
+    </div>
+
+    <div class="login-group">
+        <div class="login-logo-top"></div>
+        <div class="login-panel">
+            <div class="login-head"><span><img th:src="${flags.webSiteIconUrl + '?version=' + flags.versionHash}" height="26"></span> <span th:text="${flags.webSiteName}">CAT</span></div>
+            <div class="login-content">
+                <div class="login">
+                    <form  action="#" th:action="@{login.html}" th:object="${login}" method="post" >
+                        <div class="form-group"><label>User Name</label>
+                            <div class="input-group is-valid">
+                                <input th:field="*{name}" class="form-control input-sm" placeholder=""/>
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Password</label>
+                            <div class="input-group is-valid">
+                                <input th:field="*{password}" class="form-control input-sm" placeholder=""  type="password"/>
+                            </div>
+                        </div>
+                        <div th:if="${!flags.globalUsers}" class="form-group">
+                            <label>Tenant</label>
+                            <div class="input-group is-valid">
+                                <select th:field="*{tenantId}" class="form-control">
+                                    <option th:each="t : ${tenants}" th:value="${t.id}" th:text="${t.name}"/>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="hidden" th:field="*{redirect}" />
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="login-logo-bottom"></div>
+        <div class="login-footer">
+            <a target="company" th:href="${flags.companyWebSiteUrl}"><span th:text="${flags.companyName}"></span> - <span th:text="${flags.companyWebSiteUrl}"></span></a>
+            <br/>
+            <div th:text="${flags.currentVersion}"></div>
+            <br/>
+            <div  th:if="${flags.updatesAvailable}"
+                  th:text="${'New version available: ' + flags.latestVersion}"
+                  class="alert alert-warning"
+                  role="alert">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

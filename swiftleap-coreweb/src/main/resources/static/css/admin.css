@@ -1,0 +1,250 @@
+
+body, .main {
+    min-width: 900px;
+    height: 100%;
+}
+
+.navbar {
+    margin-bottom: 10px;
+}
+
+.modal-header .close {
+    margin-top: -15px;
+}
+
+.rules-logo {
+    background: url("../img/ruleslogo.png");
+}
+
+.login-panel {
+    width: 430px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 4px;
+    margin-top: 15vh;
+    box-shadow: 0 0 6px rgba(0, 0, 0, .5);
+}
+
+.login-panel .login-head {
+    background-color: #a33828;
+    color: white;
+    font-size: 14pt;
+    padding: 10px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.login-panel .login-content {
+    padding: 10px;
+}
+
+.login-footer {
+    margin-top: 10px;
+    width: 430px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: #888;
+    font-size: 9pt;
+}
+
+.login-footer a {
+    color: #888;
+}
+
+.rules-main {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.rules-main-menu {
+    width: 200px;
+    min-width: 200px;
+    border-right: 1px solid #eee;
+    margin-right: 5px;
+}
+
+.rules-main-content {
+    padding: 5px;
+    flex: 1;
+}
+
+.rules-main-content .rules-main-content-title {
+    margin-top: 0;
+}
+
+.tree {
+    padding-bottom: 10px;
+}
+
+.tree .tree-header {
+    padding: 4px 5px;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 12pt;
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+}
+
+.tree .tree-header .dropdown {
+    display: inline;
+    float: right;
+}
+
+.tree .tree-header .dropdown a {
+    color: #333;
+}
+
+.tree .top-level {
+    margin-top: 5px;
+}
+
+.tree .tree-group {
+    margin-left: 12pt;
+}
+
+.tree .tree-group.top-level {
+    margin: 10px 0 0 0;
+}
+
+
+.tree .tree-group-label a {
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+}
+
+.tree .top-level > .tree-group-label a {
+    font-weight: bold;
+}
+
+
+.tree .tree-group-label.selected a  {
+    color: #337AB7;
+    font-weight: bold;
+}
+
+.code-editor .btn-group {
+    display: block;
+    background-color: #f8f8f8;
+    border: 1px solid #e7e7e7;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.code-editor .code-editor-textarea {
+    font-family: monospace;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    min-height: 250px;
+    height: 50vh;
+    overflow: auto;
+    padding: 10px;
+    color: #d7d7d7;
+    background-color: #2B2B2B;
+    word-wrap: break-word;
+    word-break: normal;
+}
+
+.code-editor .code-editor-textarea code {
+    display: inline;
+    color: #ffeac2;
+    background-color: #333232;
+    border: 1px solid #4d4d4d;
+    border-radius: 3px;
+    padding: 1px 2px;
+    cursor: pointer;
+}
+
+
+.code-editor-tools div, .code-editor-tools button {
+    display: inline;
+    margin: 2px;
+}
+
+.script-info-used {
+    margin:0;
+    padding-left: 10px;
+}
+
+.a-published {
+    display: inline-block;
+    width: 16pt;
+    font-weight: bold;
+    color: white;
+    height: 16pt;
+    padding: 3px;
+    margin-right: 3px;
+    text-align: center;
+    background-color: darkorange;
+    border-radius: 16pt;
+}
+
+.a-current {
+    display: inline-block;
+    font-weight: bold;
+    color: white;
+    width: 16pt;
+    height: 16pt;
+    padding: 3px;
+    margin-right: 3px;
+    text-align: center;
+    background-color: cornflowerblue;
+    border-radius: 16pt;
+}
+
+
+.component-title {
+    font-weight: bold;
+    font-size: 17pt;
+}
+
+.component-title-sm {
+    font-size: 14pt;
+}
+
+.component-actions {
+    font-size: 12pt;
+}
+
+.component-actions .fa {
+    margin-left: 8px;
+}
+
+.delete-action {
+    color: #a55044;
+    margin-left: 20px;
+}
+
+.component-actions .delete-action {
+    border-left: 1px solid #aaa;
+}
+
+.test-stats td {
+    padding: 5px 20px;
+}
+
+.test-stats .bold {
+    font-weight: bold;
+    padding:  5px 5px;
+}
+
+.test-success {
+}
+
+.test-failed {
+    color: brown;
+    font-weight: bold;
+}
+
+.test-warning {
+    color: #a55044;
+}
+
+.test-error {
+    background-color: #e4c5c5;
+    color: brown;
+    font-weight: bold;
+}

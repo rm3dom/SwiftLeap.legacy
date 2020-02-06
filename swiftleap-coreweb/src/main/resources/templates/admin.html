@@ -1,0 +1,47 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${flags.siteName}">PHD-Admin</title>
+
+    <link rel="stylesheet" type="text/css" th:attr="href=${flags.resourceUrl + 'fonts/font-awesome/css/font-awesome.min.css'}"/>
+    <link rel="stylesheet" type="text/css" th:attr="href=${flags.resourceUrl + 'lib/bootstrap/css/bootstrap.min.css'}"/>
+    <link rel="stylesheet" type="text/css" th:attr="href=${flags.resourceUrl + 'css/core.css?version=' + flags.versionHash}"/>
+
+    <script type="text/javascript" th:attr="src=${flags.resourceUrl + 'lib/jquery/jquery-1.11.3.min.js'}"></script>
+    <script type="text/javascript" th:attr="src=${flags.resourceUrl + 'lib/bootstrap/js/bootstrap.min.js'}"></script>
+
+
+    <link rel="stylesheet" type="text/css" th:attr="href=${flags.resourceUrl + 'css/admin.css?version=' + flags.versionHash}"/>
+    <script type="text/javascript" th:attr="src=${flags.resourceUrl + 'lib/admin.js?version=' + flags.versionHash}"></script>
+
+    <link rel="stylesheet" type="text/css" th:attr="href=${flags.resourceUrl + 'css/theme-' + flags.themeName + '.css?version=' + flags.versionHash}"/>
+
+</head>
+
+<body>
+<div class="main-body">
+    <div class="head">
+        <div th:remove="tag" th:utext="${menuHtml}"></div>
+    </div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var flags = {
+            globalUsers: /*[[${flags.globalUsers}]]*/ false,
+            tenantId: /*[[${flags.tenantId}]]*/ 0,
+            sessionId: /*[[${flags.sessionId}]]*/ "",
+            siteName: /*[[${flags.webSiteName}]]*/ "CAT",
+            webSiteName: /*[[${flags.webSiteName}]]*/ "CAT",
+            themeName: "",
+            webResourceUrl: /*[[${flags.webResourceUrl}]]*/ "",
+            resourceUrl: /*[[${flags.webResourceUrl}]]*/ "",
+            versionHash: /*[[${flags.versionHash}]]*/ "0",
+            companyName: /*[[${flags.companyName}]]*/ "SwiftLeap",
+            companyWebSiteUrl: /*[[${flags.companyWebSiteUrl}]]*/ "https://www.swiftleap.com/"
+        };
+        var app = Elm.Main.fullscreen(flags);
+        /*]]>*/
+    </script>
+</div>
+</body>
+</html>

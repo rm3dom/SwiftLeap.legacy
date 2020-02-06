@@ -1,0 +1,499 @@
+/************************* Bootstrap *************************/
+
+.modal-body {
+    max-height: 80vh;
+    overflow: auto;
+}
+
+.modal-backdrop {
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-xxxl .modal-lg {
+    min-width: 95%;
+    max-width: 95%;
+}
+
+.input-sm {
+    font-size: 10pt;
+}
+
+.input-group {
+    width: 100%;
+}
+
+
+.button-group {
+    padding: 5px;
+}
+.button-group button {
+    margin-right: 15px;
+}
+
+.nav-link.active {
+    border: #ddd 1px solid;
+    border-bottom: 0;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border-width: 2px;
+}
+
+.btn-transparent {
+    background-color: transparent;
+    border: 0;
+}
+
+/************************* Custom styles *************************/
+
+body {
+    margin: 0;
+    padding: 0;
+    color: #333;
+    height: 100%;
+    font-size: 10pt;
+}
+
+
+/************************* Toast *************************/
+
+.toast {
+    display: block;
+    position: fixed;
+    z-index: 2147483648;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    background-color: #b06560;
+    color: white;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px #333;
+    text-align: center;
+}
+
+.toast.info {
+    background-color: #517180;
+}
+
+.toast.warn {
+    background-color: #c49d54;
+}
+
+.toast a {
+    color: white;
+}
+
+.toast .toast-close {
+    float: right;
+    color: white;
+}
+
+/************************* Main Panel *************************/
+
+.main {
+    padding: 5px;
+    height: 100%;
+}
+
+.main-panel {
+    height: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.main-panel-content {
+    height: 100%;
+    flex: 1;
+}
+
+.main-panel-menu {
+    padding: 5px;
+    margin-right: 10px;
+    width: 200px;
+    min-width: 200px;
+    color: white;
+    border-radius: 4px;
+}
+
+.card-grid {
+
+}
+
+.card {
+
+}
+
+.margin-l10 {
+    margin-left: 10px;
+}
+
+.margin-l5 {
+    margin-left: 5px;
+}
+
+.margin-r10 {
+    margin-right: 10px;
+}
+
+.margin-r5 {
+    margin-right: 5px;
+}
+
+.user-image-sm {
+    width: 183px;
+    height: 183px;
+    border-radius: 92px;
+    border: 1px solid #aaa;
+    background: url("../img/new-user-image-default.png");
+}
+
+.hblock {
+    padding: 15px 0;
+}
+
+.hblock button {
+    margin-right: 15px;
+}
+
+.block {
+    padding: 15px 15px;
+}
+
+.link-button, .link-button:hover {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/************************* Grid / Tables *************************/
+
+.grid table thead {
+    background-color: rgba(183, 183, 183, 0.1);
+    font-weight: 600;
+    border-left: 1px solid rgba(125, 125, 125, 0.2);
+    border-right: 1px solid rgba(125, 125, 125, 0.2);
+}
+
+.grid table, thead {
+    border-top: 1px solid rgba(125, 125, 125, 0.2);
+    border-bottom: 1px solid rgba(125, 125, 125, 0.2);
+}
+
+tbody tr {
+    border-bottom: 1px solid rgba(125, 125, 125, 0.2);
+}
+
+table td, table th {
+    padding: 5px;
+}
+
+tbody tr:hover {
+    background-color: rgba(255, 255, 0, 0.05);
+}
+
+.grid .no-results {
+    font-size: smaller;
+    color: #888;
+}
+
+.grid th, .grid td {
+    word-break: normal;
+}
+
+.grid-word-break {
+    white-space: normal;
+    word-break: normal;
+}
+
+.grid tr.selected, tr.selected {
+    background-color: #48688f87;
+    color: white;
+}
+
+.grid-pager a {
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 2px 0 2px;
+    color: #333;
+    border: 0;
+    padding: 2px;
+    min-width: 20px;
+    background-color: #E0E3E9;
+    border-radius: 2px;
+}
+
+.grid-pager a.active {
+    background-color: #0070B9;
+    color: white;
+}
+
+.grid-pager {
+    border-top: 2px solid #c2cfda;
+    margin-top: 3px;
+    padding: 5px;
+}
+
+
+.grid-pager a:hover {
+    border: 0;
+    background-color: #adc3dc;
+}
+
+.grid-pager .total {
+    float: right;
+    font-size: smaller;
+    color: #888;
+}
+
+.grid-pager select {
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 2px 0 2px;
+    color: #333;
+    border: 0;
+    padding: 2px;
+    min-width: 20px;
+    background-color: #E0E3E9;
+    border-radius: 2px;
+    margin-left: 20px;
+}
+
+.b-pane .grid th {
+    color: white;
+}
+
+
+tr.grid-warn {
+    background-color: #c48e7c;
+}
+
+tr.grid-warn:hover {
+    background-color: #d99e8a;
+}
+
+.grid .show-more {
+    color: #888;
+    font-size: smaller;
+}
+
+
+/************************* Toggle Switch *************************/
+
+
+/* The switch - the box around the slider */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 16px !important;
+    max-height: 16px;
+    top: 2px;
+    padding: 0;
+    margin: 0 4px 0 0;
+}
+
+/* Hide default HTML checkbox */
+.toggle-switch input {display:none;}
+
+/* The slider */
+.toggle-switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.toggle-switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.toggle-switch input:checked + .slider {
+    background-color: #2196F3;
+}
+
+.toggle-switch input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+.toggle-switch input:checked + .slider:before {
+    -webkit-transform: translateX(16px);
+    -ms-transform: translateX(16px);
+    transform: translateX(16px);
+}
+
+/* Rounded sliders */
+.toggle-switch .slider.round {
+    border-radius: 12pt;
+}
+
+.toggle-switch .slider.round:before {
+    border-radius: 50%;
+}
+
+.toggle-switch-lg {
+    width: 50px;
+    height: 26px !important;
+    max-height: 26px;
+}
+
+.toggle-switch-lg .slider:before {
+    height: 22px;
+    width: 22px;
+}
+
+.toggle-switch-lg input:checked + .slider:before {
+    -webkit-transform: translateX(24px);
+    -ms-transform: translateX(24px);
+    transform: translateX(24px);
+}
+
+/************************* Multi Select / Select *************************/
+
+select[multiple] option {
+    padding: 5px;
+}
+
+select[multiple] option:before {
+    content:"◻ ";
+}
+
+select[multiple] .selected-input:before {
+    content:"✓ ";
+}
+
+select[multiple] .selected-input {
+    background-color: #2196F3;
+    color: white;
+}
+
+
+/************************* Help *************************/
+
+a.help-link {
+    text-decoration: none;
+    cursor: pointer;
+    color: rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 1px white;
+}
+
+a i {
+    margin-right: 5px;
+}
+
+/************************* File Upload *************************/
+.drop-zone {
+    width: 200px;
+    height: 200px;
+    border: 1px dashed #bbb;
+    background-color: #eee;
+    text-align: center;
+    margin: 5px;
+}
+
+.drop-zone p {
+    margin-top: 50px;
+    color: #999;
+    text-shadow: 1px 1px 1px white;
+}
+
+.drop-zone.active {
+    background-color: white;
+}
+
+.drop-zone i {
+    text-shadow: 1px 1px 1px white;
+    font-size: 50pt;
+    color: #ddd;
+}
+
+.drop-zone input {
+    display: none;
+}
+
+.drop-zone-info {
+    margin-top: 70px;
+}
+
+.drop-zone-info button {
+    border: 0;
+    padding: 10px;
+}
+
+.drop-zone-info button:hover {
+    background-color: #2196F3;
+    color: white;
+}
+
+
+.loader {
+    position: fixed;
+    z-index: 10000;
+    background-color: white;
+    left: 45vw;
+    top: 45vh;
+    text-align: center;
+    font-weight: bolder;
+    border: 1px solid #ddd; /* Light grey */
+    box-shadow: 0 0 10px black;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+
+
+/************************* Login *************************/
+
+.login-panel {
+    width: 430px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 4px;
+    margin-top: 15vh;
+    box-shadow: 0 0 6px rgba(0, 0, 0, .5);
+}
+
+.login-panel .login-head {
+    background-color: #a33828;
+    color: white;
+    font-size: 14pt;
+    padding: 10px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.login-panel .login-content {
+    padding: 10px;
+}
+
+.login-footer {
+    margin-top: 10px;
+    width: 430px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: #888;
+    font-size: 9pt;
+}
+
+.login-footer a {
+    color: #888;
+}
