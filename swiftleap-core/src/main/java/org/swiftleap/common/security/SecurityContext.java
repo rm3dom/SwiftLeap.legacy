@@ -166,8 +166,7 @@ public class SecurityContext {
 
 
     public static void push(SecurityContext scx) {
-        if (getTenantId() != 0)
-            throw new SecurityException("Only tenant 0 is allowed to push/impersonate");
+        checkTenantImpersonationAllowed(scx.tenant);
         tl.get().push(scx);
     }
 
@@ -244,6 +243,10 @@ public class SecurityContext {
             }
 
             @Override
+            public void setTenantId(Integer tenantId) {
+            }
+
+            @Override
             public Config getConfig() {
                 return null;
             }
@@ -275,33 +278,46 @@ public class SecurityContext {
         };
     }
 
-    private static Impersonation impersonate(Tenant tenant, Principal principal, String... roleNames) {
-        if (getTenantId() != 0)
+
+    private static void checkTenantImpersonationAllowed(Tenanted tenant) {
+        if (tenant == null)
+            throw new ServiceException("Null tenant");
+        Integer currentTenantId = getTenantId();
+        if (currentTenantId != 0 && !currentTenantId.equals(tenant.getTenantId()))
             throw new SecurityException("Only tenant 0 is allowed to impersonate");
+    }
+
+    private static void checkTenantImpersonationAllowed(Principal principal) {
+        if(principal instanceof Tenanted)
+        {
+            checkTenantImpersonationAllowed((Tenanted) principal);
+            return;
+        }
+        Integer currentTenantId = getTenantId();
+        if (currentTenantId != 0)
+            throw new SecurityException("Only tenant 0 is allowed to impersonate");
+    }
+
+    private static Impersonation impersonate(Tenant tenant, Principal principal, String... roleNames) {
+        checkTenantImpersonationAllowed(tenant);
         SecurityContext sc = getTopContext();
         if (sc == null)
             throw new ServiceException("Not allowed with null context");
-        if (tenant == null)
-            throw new ServiceException("Null tenant");
         push(createContext(sc.channel, principal, tenant, roleNames));
         return () -> pop();
     }
 
     private static Impersonation impersonate(Tenant tenant) {
-        if (getTenantId() != 0)
-            throw new SecurityException("Only tenant 0 is allowed to impersonate");
+        checkTenantImpersonationAllowed(tenant);
         SecurityContext sc = getTopContext();
         if (sc == null)
             throw new ServiceException("Not allowed with null context");
-        if (tenant == null)
-            throw new ServiceException("Null tenant");
         push(createContext(sc.channel, sc.principal, tenant, sc.roles));
         return () -> pop();
     }
 
     private static Impersonation impersonate(Principal principal, String... roleNames) {
-        if (getTenantId() != 0)
-            throw new SecurityException("Only tenant 0 is allowed to impersonate");
+        checkTenantImpersonationAllowed(principal);
         SecurityContext sc = getTopContext();
         if (sc == null)
             throw new ServiceException("Not allowed with null context");

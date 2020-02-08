@@ -24,7 +24,7 @@ import org.swiftleap.common.types.EnumValueType;
  * Created by ruans on 2017/05/22.
  */
 @CGInclude
-public interface Tenant {
+public interface Tenant extends Tenanted {
     Integer getTenantId();
 
     Config getConfig();
