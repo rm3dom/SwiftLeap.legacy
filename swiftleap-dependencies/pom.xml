@@ -32,14 +32,24 @@
             <id>central</id>
             <name>Maven Repository Switchboard</name>
             <layout>default</layout>
-            <url>http://repo1.maven.org/maven2</url>
+            <url>https://repo1.maven.org/maven2</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
         </repository>
         <repository>
             <id>mavenrepo.swiftleap.com</id>
-            <url>s3://mavenrepo.swiftleap.com/release</url>
+            <url>https://s3-us-west-2.amazonaws.com/mavenrepo.swiftleap.com/release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>kotlin-eap</id>
@@ -95,10 +105,10 @@
         <maven-compiler-version>3.8.1</maven-compiler-version>
         <maven-antrun-version>1.8</maven-antrun-version>
         <aws.version>1.11.327</aws.version>
-	<kotlin.version>1.3.60</kotlin.version>
+        <kotlin.version>1.3.60</kotlin.version>
         <kotlinx-coroutines-core.version>1.3.2</kotlinx-coroutines-core.version>
         <kotlinx-html.version>0.6.12</kotlinx-html.version>
-	<kotlin-react.version>16.9.0-pre.85-kotlin-1.3.50</kotlin-react.version>
+        <kotlin-react.version>16.9.0-pre.89-kotlin-1.3.60</kotlin-react.version>
         <kotlin-extensions.version>1.0.1-pre.85-kotlin-1.3.50</kotlin-extensions.version>
         <kotlinx-serialization.version>0.13.0</kotlinx-serialization.version>
         <jslib.dir>${project.build.directory}/lib</jslib.dir>
