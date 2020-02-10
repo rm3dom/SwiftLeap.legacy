@@ -58,7 +58,9 @@ public class AuditEventListener implements PreInsertEventListener, PreUpdateEven
             Integer tenantId = SecurityContext.getTenantId();
             Tenanted tenanted = (Tenanted) object;
             tenanted.setTenantId(tenantId);
-            props[indexOf(propNames, "tenantId")] = tenantId;
+            int index = indexOf(propNames, "tenantId");
+            if(index > -1)
+                props[index] = tenantId;
         }
         return processEvent(event, event.getState());
     }

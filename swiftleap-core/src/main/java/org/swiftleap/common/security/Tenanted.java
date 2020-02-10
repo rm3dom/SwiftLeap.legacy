@@ -16,11 +16,10 @@
  */
 package org.swiftleap.common.security;
 
+
 /**
  * Created by ruans on 2016/09/17.
  */
-public interface Tenanted {
-    Integer getTenantId();
-
+public interface Tenanted extends TenantReference {
     void setTenantId(Integer tenantId);
 }

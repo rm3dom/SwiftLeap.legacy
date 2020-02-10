@@ -243,10 +243,6 @@ public class SecurityContext {
             }
 
             @Override
-            public void setTenantId(Integer tenantId) {
-            }
-
-            @Override
             public Config getConfig() {
                 return null;
             }
@@ -279,7 +275,7 @@ public class SecurityContext {
     }
 
 
-    private static void checkTenantImpersonationAllowed(Tenanted tenant) {
+    private static void checkTenantImpersonationAllowed(TenantReference tenant) {
         if (tenant == null)
             throw new ServiceException("Null tenant");
         Integer currentTenantId = getTenantId();

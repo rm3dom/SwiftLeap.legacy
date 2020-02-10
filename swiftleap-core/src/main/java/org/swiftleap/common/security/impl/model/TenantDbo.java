@@ -66,9 +66,4 @@ public class TenantDbo implements Tenant, GenericEntity<Integer> {
     public Integer getTenantId() {
         return getId();
     }
-
-    @Override
-    public void setTenantId(Integer tenantId) {
-        id = tenantId;
-    }
 }
