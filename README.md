@@ -10,6 +10,6 @@ All of it is available under GPL version 3, see LICENSE.txt
 * Multi tenanted support
 * Party system
 * Software updates
-* Files system abstraction
+* File system abstraction
 * Standard set of web pages for tenant/user admin, logins and updates.
 
