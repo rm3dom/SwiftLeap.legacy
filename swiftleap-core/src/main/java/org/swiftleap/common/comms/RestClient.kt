@@ -55,6 +55,21 @@ interface RestProvider {
     fun <Response> doHttpPut(path: String, responseClass: Class<Response>, pathParams: Query = emptyQuery(), queryParams: Query = emptyQuery()): Response?
 }
 
+inline fun <Request, reified Response> RestProvider.doHttpPost(path: String, request: Request, pathParams: Query = emptyQuery(), queryParams: Query = emptyQuery()): Response? {
+    return this.doHttpPost(path, request, Response::class.java, pathParams, queryParams)
+}
+
+inline fun <reified Response> RestProvider.doHttpGetList(path: String, pathParams: Query = emptyQuery(), queryParams: Query = emptyQuery()): List<Response> {
+    return this.doHttpGetList(path, Response::class.java, pathParams, queryParams);
+}
+
+inline fun <reified Response> RestProvider.doHttpDelete(path: String, pathParams: Query = emptyQuery(), queryParams: Query = emptyQuery()): Response? {
+    return this.doHttpDelete(path, Response::class.java, pathParams, queryParams);
+}
+
+inline fun <reified Response> RestProvider.doHttpPut(path: String, pathParams: Query = emptyQuery(), queryParams: Query = emptyQuery()): Response? {
+    return this.doHttpPut(path, Response::class.java, pathParams, queryParams);
+}
 
 enum class BalancingMethod {
     RoundRobbin,
