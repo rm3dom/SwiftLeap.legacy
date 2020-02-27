@@ -20,28 +20,31 @@
 </head>
 
 <body>
-<div class="main-body">
+<div class="main">
     <div class="head">
         <div th:remove="tag" th:utext="${menuHtml}"></div>
     </div>
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        var flags = {
-            globalUsers: /*[[${flags.globalUsers}]]*/ false,
-            tenantId: /*[[${flags.tenantId}]]*/ 0,
-            sessionId: /*[[${flags.sessionId}]]*/ "",
-            siteName: /*[[${flags.webSiteName}]]*/ "CAT",
-            webSiteName: /*[[${flags.webSiteName}]]*/ "CAT",
-            themeName: "",
-            webResourceUrl: /*[[${flags.webResourceUrl}]]*/ "",
-            resourceUrl: /*[[${flags.webResourceUrl}]]*/ "",
-            versionHash: /*[[${flags.versionHash}]]*/ "0",
-            companyName: /*[[${flags.companyName}]]*/ "SwiftLeap",
-            companyWebSiteUrl: /*[[${flags.companyWebSiteUrl}]]*/ "https://www.swiftleap.com/"
-        };
-        var app = Elm.Main.fullscreen(flags);
-        /*]]>*/
-    </script>
+    <div id="root" style="padding: 0 10px;"></div>
 </div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var flags = {
+        globalUsers: /*[[${flags.globalUsers}]]*/ false,
+        tenantId: /*[[${flags.tenantId}]]*/ 0,
+        sessionId: /*[[${flags.sessionId}]]*/ "",
+        siteName: /*[[${flags.webSiteName}]]*/ "CAT",
+        webSiteName: /*[[${flags.webSiteName}]]*/ "CAT",
+        themeName: "",
+        webResourceUrl: /*[[${flags.webResourceUrl}]]*/ "",
+        resourceUrl: /*[[${flags.webResourceUrl}]]*/ "",
+        versionHash: /*[[${flags.versionHash}]]*/ "0",
+        companyName: /*[[${flags.companyName}]]*/ "SwiftLeap",
+        companyWebSiteUrl: /*[[${flags.companyWebSiteUrl}]]*/ "https://www.swiftleap.com/"
+    };
+    var app = Elm.Main.embed(document.getElementById('root'), flags)
+    /*]]>*/
+</script>
 </body>
+
 </html>
