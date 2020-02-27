@@ -1,6 +1,7 @@
 # NOTE
 
-This project is/was a set of tools to build a number of independant projects. The concepts are old and we are focusing on cloud technologies instead.
+This project was a set of tools to build a number of independant projects. The concepts are old, and not scalable.
+
 All of it is available under GPL version 3, see LICENSE.txt
 
 ## Functionality
@@ -10,6 +11,6 @@ All of it is available under GPL version 3, see LICENSE.txt
 * Multi tenanted support
 * Party system
 * Software updates
-* Files system abstraction
+* File system abstraction
 * Standard set of web pages for tenant/user admin, logins and updates.
 
