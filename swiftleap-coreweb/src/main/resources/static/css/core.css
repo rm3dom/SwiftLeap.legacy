@@ -390,7 +390,7 @@ select[multiple] .selected-input {
 
 a.help-link {
     text-decoration: none;
-    cursor: pointer;
+    cursor: help;
     color: rgba(0,0,0,0.5);
     text-shadow: 1px 1px 1px white;
 }
