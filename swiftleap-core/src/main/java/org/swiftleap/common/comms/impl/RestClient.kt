@@ -26,11 +26,13 @@ import org.springframework.http.client.ClientHttpRequest
 import org.springframework.http.client.SimpleClientHttpRequestFactory
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.stereotype.Component
+import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import org.swiftleap.common.comms.*
 import org.swiftleap.common.service.ServiceException
 import org.swiftleap.common.util.StringUtil
 import java.io.IOException
+import java.net.ConnectException
 import java.net.URI
 import java.util.*
 import java.util.regex.Pattern
@@ -286,20 +288,30 @@ class BasicRestProvider(
                 .toBody()
     }
 
+    private fun toPrettyException(ex: Exception): Throwable =
+        when( ex) {
+            is ResourceAccessException -> ServiceException("Unable to connect to host. Please try again later.")
+            is ConnectException -> ServiceException("Unable to connect to host. Please try again later.")
+            else -> ServiceException(ex)
+        }
+
     private fun <Request, Response> doHttpRequestResponse(
             path: String,
             request: Request,
             responseClass: Class<Response>,
             pathParams: Query,
             queryParams: Query): Response? {
-        //org.springframework.web.client.ResourceAccessException, java.net.ConnectException
-        return restTemplate.exchange(
-                toUrl(path, queryParams),
-                HttpMethod.POST,
-                HttpEntity(request),
-                responseClass,
-                pathParams)
-                .toBody()
+        try {
+            return restTemplate.exchange(
+                            toUrl(path, queryParams),
+                            HttpMethod.POST,
+                            HttpEntity(request),
+                            responseClass,
+                            pathParams)
+                    .toBody()
+        } catch (ex : Exception) {
+            throw toPrettyException(ex)
+        }
     }
 
     private fun <Response> doHttpResponse(
@@ -308,14 +320,17 @@ class BasicRestProvider(
             responseClass: Class<Response>,
             pathParams: Query,
             queryParams: Query): Response? {
-        //org.springframework.web.client.ResourceAccessException, java.net.ConnectException
-        return restTemplate.exchange(
-                toUrl(path, queryParams),
-                method,
-                HttpEntity.EMPTY,
-                responseClass,
-                pathParams)
-                .toBody()
+        try {
+            return restTemplate.exchange(
+                    toUrl(path, queryParams),
+                    method,
+                    HttpEntity.EMPTY,
+                    responseClass,
+                    pathParams)
+                    .toBody()
+        } catch (ex : Exception) {
+            throw toPrettyException(ex)
+        }
     }
 
 
@@ -324,14 +339,17 @@ class BasicRestProvider(
             path: String,
             pathParams: Query,
             queryParams: Query): List<Response> {
-        //org.springframework.web.client.ResourceAccessException, java.net.ConnectException
-        return restTemplate.exchange(
-                toUrl(path, queryParams),
-                method,
-                HttpEntity.EMPTY,
-                object : ParameterizedTypeReference<ArrayList<Response>>() {},
-                pathParams)
-                .toBody() ?: ArrayList<Response>(0)
+        try {
+            return restTemplate.exchange(
+                    toUrl(path, queryParams),
+                    method,
+                    HttpEntity.EMPTY,
+                    object : ParameterizedTypeReference<ArrayList<Response>>() {},
+                    pathParams)
+                    .toBody() ?: ArrayList<Response>(0)
+        } catch (ex : Exception) {
+            throw toPrettyException(ex)
+        }
     }
 }
 
