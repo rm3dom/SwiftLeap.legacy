@@ -17,9 +17,11 @@
 
 package org.swiftleap.common.comms
 
+import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpRequest
 import org.springframework.http.ResponseEntity
+import java.lang.reflect.ParameterizedType
 import java.net.URI
 
 typealias Query = Map<String, Any>
@@ -44,7 +46,7 @@ interface RestProvider {
 
     fun <Response> doHttpGet(path: String, responseClass: Class<Response>, pathParams: Query = emptyQuery(), queryParams: Query = emptyQuery()): Response?
 
-    fun <Response> doHttpGetList(path: String, responseClass: Class<Response>, pathParams: Query = emptyQuery(), queryParams: Query = emptyQuery()): List<Response>
+    fun <Response> doHttpGet(path: String, responseType: ParameterizedTypeReference<Response>, pathParams: Query = emptyQuery(), queryParams: Query = emptyQuery()): Response?
 
     fun doHttpDelete(path: String, pathParams: Query = emptyQuery(), queryParams: Query = emptyQuery())
 
@@ -60,7 +62,7 @@ inline fun <Request, reified Response> RestProvider.doHttpPost(path: String, req
 }
 
 inline fun <reified Response> RestProvider.doHttpGetList(path: String, pathParams: Query = emptyQuery(), queryParams: Query = emptyQuery()): List<Response> {
-    return this.doHttpGetList(path, Response::class.java, pathParams, queryParams);
+    return this.doHttpGet(path, object : ParameterizedTypeReference<List<Response>>() {}, pathParams, queryParams) ?: emptyList()
 }
 
 inline fun <reified Response> RestProvider.doHttpDelete(path: String, pathParams: Query = emptyQuery(), queryParams: Query = emptyQuery()): Response? {

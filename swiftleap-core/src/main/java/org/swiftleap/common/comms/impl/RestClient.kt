@@ -36,7 +36,6 @@ import java.net.ConnectException
 import java.net.URI
 import java.util.*
 import java.util.regex.Pattern
-import kotlin.collections.ArrayList
 import kotlin.math.absoluteValue
 
 private typealias BadHost = Triple<String, Long, Long>
@@ -242,8 +241,8 @@ class BasicRestProvider(
     override fun <Response> doHttpGet(path: String, responseClass: Class<Response>, pathParams: Query, queryParams: Query): Response? =
             doHttpResponse(HttpMethod.GET, path, responseClass, pathParams, queryParams)
 
-    override fun <Response> doHttpGetList(path: String, responseClass: Class<Response>, pathParams: Query, queryParams: Query): List<Response> =
-            doHttpResponseList(HttpMethod.GET, path, pathParams, queryParams)
+    override fun <Response> doHttpGet(path: String, responseType: ParameterizedTypeReference<Response>, pathParams: Query, queryParams: Query): Response? =
+            doHttpResponse(HttpMethod.GET, path, responseType, pathParams, queryParams)
 
     override fun doHttpDelete(path: String, pathParams: Query, queryParams: Query) =
             doHttpEmpty(HttpMethod.DELETE, path, pathParams, queryParams)
@@ -334,19 +333,20 @@ class BasicRestProvider(
     }
 
 
-    private fun <Response> doHttpResponseList(
+    private fun <Response> doHttpResponse(
             method: HttpMethod,
             path: String,
+            responseType: ParameterizedTypeReference<Response>,
             pathParams: Query,
-            queryParams: Query): List<Response> {
+            queryParams: Query): Response? {
         try {
             return restTemplate.exchange(
                     toUrl(path, queryParams),
                     method,
                     HttpEntity.EMPTY,
-                    object : ParameterizedTypeReference<ArrayList<Response>>() {},
+                    responseType,
                     pathParams)
-                    .toBody() ?: ArrayList<Response>(0)
+                    .toBody()
         } catch (ex : Exception) {
             throw toPrettyException(ex)
         }
