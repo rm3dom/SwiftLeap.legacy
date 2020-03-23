@@ -16,6 +16,10 @@
  */
 package org.swiftleap.common.service;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.swiftleap.common.util.StringUtil;
+
 import java.io.Serializable;
 
 /**
@@ -42,4 +46,17 @@ public interface ErrorMessage extends Serializable {
      * @return a retrievable reference no
      */
     String getReference();
+
+    @Getter
+    @Setter
+    class DefaultErrorMessage implements ErrorMessage {
+        String message;
+        String reference;
+        String referenceNo;
+        int code;
+
+        public String getReference() {
+            return StringUtil.isNullOrWhites(reference) ? referenceNo : reference;
+        }
+    }
 }

@@ -31,13 +31,18 @@ public class ServiceException extends RuntimeException implements ServiceError {
         reference = ServiceError.getReferenceNo();
     }
 
+    public ServiceException(String message, String reference, Throwable cause) {
+        super(message, cause);
+        this.reference = reference;
+    }
+
     public ServiceException(String message, Throwable cause) {
         super(message, cause);
         from(cause);
     }
 
     public ServiceException(Throwable cause) {
-        super(cause);
+        super(cause.getMessage(), cause);
         from(cause);
     }
 

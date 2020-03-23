@@ -17,6 +17,7 @@
 
 package org.swiftleap.common.comms.impl
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import org.springframework.core.ParameterizedTypeReference
@@ -26,9 +27,11 @@ import org.springframework.http.client.ClientHttpRequest
 import org.springframework.http.client.SimpleClientHttpRequestFactory
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.stereotype.Component
+import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import org.swiftleap.common.comms.*
+import org.swiftleap.common.service.ErrorMessage
 import org.swiftleap.common.service.ServiceException
 import org.swiftleap.common.util.StringUtil
 import java.io.IOException
@@ -179,13 +182,11 @@ class BasicRestProvider(
 ) : RestProvider {
     private val restTemplate: RestTemplate
     private val hostSpec: HostSpec = hostSolver.parse(pathSpec)
-
+    private val mapper : ObjectMapper = ObjectMapper()
     init {
-
-        val mapper = ObjectMapper()
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
         mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true)
-        //mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
         val converter = MappingJackson2HttpMessageConverter(mapper);
 
@@ -287,8 +288,18 @@ class BasicRestProvider(
                 .toBody()
     }
 
+    private fun toServiceError(ex: HttpServerErrorException) : ServiceException  =
+            try {
+                val errorMessage =
+                        mapper.readValue(ex.responseBodyAsString, ErrorMessage.DefaultErrorMessage::class.java)
+                ServiceException(errorMessage.message, errorMessage.reference, ex)
+            } catch (_ : Exception) {
+                ServiceException(ex)
+            }
+
     private fun toPrettyException(ex: Exception): Throwable =
         when( ex) {
+            is HttpServerErrorException -> toServiceError(ex)
             is ResourceAccessException -> ServiceException("Unable to connect to host. Please try again later.")
             is ConnectException -> ServiceException("Unable to connect to host. Please try again later.")
             else -> ServiceException(ex)
