@@ -130,37 +130,38 @@ public interface UserPrincipal extends Principal, Tenanted {
         if (roles == null) {
             return false;
         }
-        for (SecRoleIdentifier r : getPrincipalRoles()) {
-            for (String sr : roles) {
+        for (String sr : roles) {
+            if (sr.equalsIgnoreCase("user") && !isGuest())
+                return true;
+            if (sr.equalsIgnoreCase("guest") && isGuest())
+                return true;
+            if ((!sr.equalsIgnoreCase("guest")) && isSuper())
+                return true;
+            for (SecRoleIdentifier r : getPrincipalRoles()) {
                 if (sr.equalsIgnoreCase(r.getCode())) {
                     return true;
                 }
-                if (sr.equalsIgnoreCase("user") && !isGuest())
-                    return true;
-                if (sr.equalsIgnoreCase("guest") && isGuest())
-                    return true;
-                if ((!sr.equalsIgnoreCase("guest")) && isSuper())
-                    return true;
             }
         }
         return false;
     }
 
     default boolean hasActiveRole(SecRoleIdentifier role) {
-        if (role == null) {
+        if (role == null || role.getCode() == null) {
             return false;
         }
+
+        if (Objects.equals(role.getCode(), "user") && !isGuest())
+            return true;
+        if (Objects.equals(role.getCode(), "guest") && isGuest())
+            return true;
+        if ((!Objects.equals(role.getCode(), "guest")) && isSuper())
+            return true;
 
         for (SecRoleIdentifier r : getPrincipalRoles()) {
             if (Objects.equals(role.getCode(), r.getCode())) {
                 return true;
             }
-            if (Objects.equals(role.getCode(), "user") && !isGuest())
-                return true;
-            if (Objects.equals(role.getCode(), "guest") && isGuest())
-                return true;
-            if ((!Objects.equals(role.getCode(), "guest")) && isSuper())
-                return true;
         }
         return false;
     }

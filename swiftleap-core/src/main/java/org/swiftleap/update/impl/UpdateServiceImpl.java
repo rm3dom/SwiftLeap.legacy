@@ -95,8 +95,12 @@ public class UpdateServiceImpl implements UpdateService {
 
     private void timerTick() {
         //sendNodeInfo();
-        downloadCatalog();
-        removeOldUpdates();
+        try {
+            downloadCatalog();
+            removeOldUpdates();
+        } catch (Exception ex) {
+            log.error("Update timer failed with error", ex);
+        }
     }
 
     private void removeOldUpdates() {
