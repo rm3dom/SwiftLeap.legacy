@@ -106,8 +106,8 @@ postFile path file =
 postBody : String -> Http.Body -> JD.Decoder payload -> HostApiConfig -> Task Http.Error payload
 postBody path body decoder host =
     HttpBuilder.post (toUrl host path)
-        |> HttpBuilder.withHeader "X-SessionId" host.apiToken
-        |> HttpBuilder.withHeader "X-TenantId" host.tenantId
+        --|> HttpBuilder.withHeader "X-SessionId" host.apiToken
+        --|> HttpBuilder.withHeader "X-TenantId" host.tenantId
         |> HttpBuilder.withBody body
         |> HttpBuilder.withTimeout (120 * Time.second)
         |> HttpBuilder.withExpect (Http.expectJson decoder)
@@ -117,8 +117,8 @@ postBody path body decoder host =
 postExpectNothing : String -> Http.Body -> HostApiConfig -> Task Http.Error String
 postExpectNothing path body host =
     HttpBuilder.post (toUrl host path)
-        |> HttpBuilder.withHeader "X-SessionId" host.apiToken
-        |> HttpBuilder.withHeader "X-TenantId" host.tenantId
+        --|> HttpBuilder.withHeader "X-SessionId" host.apiToken
+        --|> HttpBuilder.withHeader "X-TenantId" host.tenantId
         |> HttpBuilder.withBody body
         |> HttpBuilder.withTimeout (120 * Time.second)
         |> HttpBuilder.withExpect Http.expectString
@@ -128,8 +128,8 @@ postExpectNothing path body host =
 get : String -> JD.Decoder payload -> HostApiConfig -> Task Http.Error payload
 get path decoder host =
     HttpBuilder.get (toUrl host path)
-        |> HttpBuilder.withHeader "X-SessionId" host.apiToken
-        |> HttpBuilder.withHeader "X-TenantId" host.tenantId
+        --|> HttpBuilder.withHeader "X-SessionId" host.apiToken
+        --|> HttpBuilder.withHeader "X-TenantId" host.tenantId
         |> HttpBuilder.withTimeout (120 * Time.second)
         |> HttpBuilder.withExpect (Http.expectJson decoder)
         |> HttpBuilder.toTask
@@ -138,8 +138,8 @@ get path decoder host =
 getExpectNothing : String -> HostApiConfig -> Task Http.Error String
 getExpectNothing path host =
     HttpBuilder.get (toUrl host path)
-        |> HttpBuilder.withHeader "X-SessionId" host.apiToken
-        |> HttpBuilder.withHeader "X-TenantId" host.tenantId
+        --|> HttpBuilder.withHeader "X-SessionId" host.apiToken
+        --|> HttpBuilder.withHeader "X-TenantId" host.tenantId
         |> HttpBuilder.withTimeout (120 * Time.second)
         |> HttpBuilder.withExpect Http.expectString
         |> HttpBuilder.toTask
@@ -148,8 +148,8 @@ getExpectNothing path host =
 put : String -> JD.Decoder payload -> HostApiConfig -> Task Http.Error payload
 put path decoder host =
     HttpBuilder.put (toUrl host path)
-        |> HttpBuilder.withHeader "X-SessionId" host.apiToken
-        |> HttpBuilder.withHeader "X-TenantId" host.tenantId
+        --|> HttpBuilder.withHeader "X-SessionId" host.apiToken
+        --|> HttpBuilder.withHeader "X-TenantId" host.tenantId
         |> HttpBuilder.withTimeout (120 * Time.second)
         |> HttpBuilder.withExpect (Http.expectJson decoder)
         |> HttpBuilder.toTask
@@ -158,8 +158,8 @@ put path decoder host =
 putExpectNothing : String -> HostApiConfig -> Task Http.Error String
 putExpectNothing path host =
     HttpBuilder.put (toUrl host path)
-        |> HttpBuilder.withHeader "X-SessionId" host.apiToken
-        |> HttpBuilder.withHeader "X-TenantId" host.tenantId
+        --|> HttpBuilder.withHeader "X-SessionId" host.apiToken
+        --|> HttpBuilder.withHeader "X-TenantId" host.tenantId
         |> HttpBuilder.withTimeout (120 * Time.second)
         |> HttpBuilder.withExpect Http.expectString
         |> HttpBuilder.toTask
@@ -168,8 +168,8 @@ putExpectNothing path host =
 delete : String -> JD.Decoder payload -> HostApiConfig -> Task Http.Error payload
 delete path decoder host =
     HttpBuilder.delete (toUrl host path)
-        |> HttpBuilder.withHeader "X-SessionId" host.apiToken
-        |> HttpBuilder.withHeader "X-TenantId" host.tenantId
+        --|> HttpBuilder.withHeader "X-SessionId" host.apiToken
+        --|> HttpBuilder.withHeader "X-TenantId" host.tenantId
         |> HttpBuilder.withTimeout (120 * Time.second)
         |> HttpBuilder.withExpect (Http.expectJson decoder)
         |> HttpBuilder.toTask
@@ -178,8 +178,8 @@ delete path decoder host =
 deleteExpectNothing : String -> HostApiConfig -> Task Http.Error String
 deleteExpectNothing path host =
     HttpBuilder.delete (toUrl host path)
-        |> HttpBuilder.withHeader "X-SessionId" host.apiToken
-        |> HttpBuilder.withHeader "X-TenantId" host.tenantId
+        --|> HttpBuilder.withHeader "X-SessionId" host.apiToken
+        --|> HttpBuilder.withHeader "X-TenantId" host.tenantId
         |> HttpBuilder.withTimeout (120 * Time.second)
         |> HttpBuilder.withExpect Http.expectString
         |> HttpBuilder.toTask

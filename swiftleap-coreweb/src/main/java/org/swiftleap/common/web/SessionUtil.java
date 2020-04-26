@@ -43,6 +43,8 @@ public class SessionUtil {
             clearSessionId(response);
             return;
         }
+        //SameSite = PropertyManager.IsDevEnvironment ? SameSiteMode.None : SameSiteMode.Lax,
+        //SecurePolicy = CookieSecurePolicy.SameAsRequest
         Cookie cookie = new Cookie("session", sessionId);
         cookie.setPath("/");
         cookie.setMaxAge(-1);

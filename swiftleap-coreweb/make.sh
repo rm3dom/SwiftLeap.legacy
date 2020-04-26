@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export PATH="node_modules/elm/binwrappers:$PATH"
-
 OUTPATH=./target/classes/static/lib/admin.js
 
 if [ ! -d "node_modules" ]; then
@@ -9,7 +7,7 @@ if [ ! -d "node_modules" ]; then
 fi
 
 #rename file and push the assets to the main dist
-elm-make --yes  ./src/main/elm/Main.elm --output=$OUTPATH && gulp
+npx elm-make --yes  ./src/main/elm/Main.elm --output=$OUTPATH && npx gulp
 RES=$?
 if [ ! "$RES" -eq "0" ]; then
     exit $RES

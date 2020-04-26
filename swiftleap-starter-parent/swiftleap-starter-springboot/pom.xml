@@ -55,10 +55,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.swiftleap</groupId>
-            <artifactId>swiftleap-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>kotlinx-serialization-runtime</artifactId>
         </dependency>

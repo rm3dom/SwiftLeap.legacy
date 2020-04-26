@@ -35,6 +35,7 @@ type alias UserRequest =
     , userName : String
     , email : String
     , activated : Bool
+    , managed : Bool
     }
 
 init: UserRequest
@@ -50,6 +51,7 @@ init =
     , userName = ""
     , email = ""
     , activated = True
+    , managed = True
     }
 
 decode: JD.Decoder UserRequest
@@ -66,6 +68,7 @@ decode =
         |> JDP.optional "userName" JD.string ""
         |> JDP.optional "email" JD.string ""
         |> JDP.optional "activated" JD.bool True
+        |> JDP.optional "managed" JD.bool True
 
 encode: UserRequest -> JE.Value
 encode o = 

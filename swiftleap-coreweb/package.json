@@ -4,16 +4,17 @@
   "description": "",
   "main": "gulpfile.js",
   "dependencies": {
+    "binwrap": "^0.2.2",
     "elm": "^0.18.0",
-    "gulp-elm": "^0.6.1",
+    "gulp-elm": "^0.8.2",
     "gulp-plumber": "^1.2.1",
     "gulp-uglify-es": "^1.0.4",
     "gulp-util": "^3.0.7"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-minify-inline": "^0.2.1",
-    "gulp-vulcanize": "^6.1.0"
+    "gulp-minify-inline": "^1.1.0",
+    "gulp-vulcanize": "^7.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

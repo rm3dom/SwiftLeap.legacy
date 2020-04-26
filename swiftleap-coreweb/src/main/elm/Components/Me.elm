@@ -166,8 +166,19 @@ view system model =
         sysUser =
             Maybe.withDefault User.init (System.getUser system)
 
+        editActions =
+            if not user.managed then
+                Html.text ""
+            else
+                Components.hblock
+                    [ Form.primaryButton Save "Save"
+                    , Form.button Reset "Reset"
+                    ]
+
         passwordView =
-            if model.showPassword then
+            if not user.managed then
+                Html.text "This user is managed by an external system. Trusted by chain of authority."
+            else if model.showPassword then
                 Html.div []
                     [ Form.passwordInput "Password" SetUserPassword user.password
                     , Form.passwordInput "Confirm Password" SetUserConfirmPassword model.confirmPass
@@ -191,10 +202,7 @@ view system model =
                     , Form.input "First Name" SetUserFirstName user.firstName
                     , Form.input "Surname" SetUserSurname user.surname
                     , passwordView
-                    , Components.hblock
-                        [ Form.primaryButton Save "Save"
-                        , Form.button Reset "Reset"
-                        ]
+                    , editActions
                     ]
                 ]
             ]
@@ -218,4 +226,5 @@ toUserRequest auser =
     , userName = user.userName
     , activated = user.activated
     , email = user.email
+    , managed = user.managed
     }

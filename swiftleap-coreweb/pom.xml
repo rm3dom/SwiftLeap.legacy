@@ -17,11 +17,13 @@
             <artifactId>swiftleap-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!--
         <dependency>
             <groupId>org.swiftleap</groupId>
             <artifactId>swiftleap-party</artifactId>
             <version>${project.version}</version>
         </dependency>
+        -->
         <dependency>
             <groupId>org.swiftleap</groupId>
             <artifactId>swiftleap-elm-core</artifactId>

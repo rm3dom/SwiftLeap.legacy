@@ -31,6 +31,8 @@ import java.util.Date;
  */
 public interface User extends UserPrincipal, TenantedEntity<Long> {
 
+    Long getUserId();
+
     void setPassword(String password);
 
     String getFirstName();

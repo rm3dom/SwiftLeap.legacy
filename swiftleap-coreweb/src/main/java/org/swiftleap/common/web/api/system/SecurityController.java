@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.swiftleap.common.security.SecurityService;
-import org.swiftleap.common.security.User;
+import org.swiftleap.common.security.UserPrincipal;
 import org.swiftleap.common.security.UserRequest;
 import org.swiftleap.common.security.dto.UserDto;
 import org.swiftleap.common.service.ManagedServiceException;
@@ -30,7 +30,6 @@ import org.swiftleap.common.util.dto.PairDto;
 import org.swiftleap.common.web.SessionUtil;
 import org.swiftleap.common.web.api.system.model.AuthRequestDto;
 import org.swiftleap.common.web.api.system.model.SearchUsersRequestDto;
-import org.swiftleap.party.PartyService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,11 +44,9 @@ import java.util.stream.Collectors;
 public class SecurityController {
     @Autowired
     SecurityService securityService;
-    @Autowired
-    PartyService partyService;
 
 
-    UserDto mapUser(User user, String sessionId) {
+    UserDto mapUser(UserPrincipal user, String sessionId) {
         return new UserDto(user, sessionId);
     }
 
@@ -61,8 +58,7 @@ public class SecurityController {
         val session = securityService.getSession(sessionId);
         if (session == null)
             return null;
-        val user = securityService.getUser(session.getUser().getUserId());
-        return mapUser(user, session.getSessionId());
+        return mapUser(session.getUser(), session.getSessionId());
     }
 
     @Transactional(readOnly = false, noRollbackFor = {SecurityException.class})
@@ -72,8 +68,7 @@ public class SecurityController {
         if (session == null)
             return null;
         SessionUtil.setSessionId(session.getSessionId(), response);
-        val user = securityService.getUser(session.getUser().getUserId());
-        return mapUser(user, session.getSessionId());
+        return mapUser(session.getUser(), session.getSessionId());
     }
 
     @Transactional(readOnly = false, noRollbackFor = {SecurityException.class})

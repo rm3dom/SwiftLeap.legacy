@@ -81,6 +81,12 @@ public class SecurityServiceImpl implements SecurityService {
     private String ldapSearchFilter = "(&(objectClass=user)(objectCategory=person)(sAMAccountName={user}))";
     @Value(value = PropKeys._SECURITY_ADMIN_USERNAME)
     private String adminUserName = "sysadm";
+    @Value(value = PropKeys._SECURITY_JWT_SIGNING_KEY)
+    private String jwtSigningKey = "";
+    @Value(value = PropKeys._SECURITY_JWT_AUDIENCE)
+    private String jwtAudience = "";
+    @Value(value = PropKeys._SECURITY_JWT_ISSUER)
+    private String jwtIssuer = "";
 
     public static boolean contains(String haystack, String needel) {
         if (StringUtil.isNullOrWhites(needel))
@@ -455,8 +461,9 @@ public class SecurityServiceImpl implements SecurityService {
         if (user.getStatus() != User.UserStatus.ACTIVE)
             throw new ManagedSecurityException("User disabled");
 
-        String sessionId = UUID.randomUUID().toString();
+        String sessionId = Jwt.INSTANCE.encode(user, jwtSigningKey.getBytes(), jwtAudience, jwtIssuer);
         Session session = new Session();
+        session.setScheme("Bearer");
         session.setSessionId(sessionId);
         session.setUser(user);
         session.setSessionCreated(new Date());
@@ -546,9 +553,29 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public Session getSession(String sessionId) {
+        if(StringUtil.isNullOrWhites(sessionId))
+            return null;
+        Session session = null;
         synchronized (sessions) {
-            return sessions.get(sessionId);
+             session = sessions.get(sessionId);
+             if(session != null)
+                 return session;
         }
+
+        try {
+            ClaimsPrincipal user = Jwt.INSTANCE.decode(sessionId, jwtSigningKey.getBytes());
+            if(user != null) {
+                session = new Session();
+                session.setScheme("Bearer");
+                session.setUser(user);
+                session.setSessionCreated(new Date());
+                session.setSessionId(sessionId);
+                return session;
+            }
+        } catch (Exception ex) {
+            //Nothing, login failed.
+        }
+        return null;
     }
 
     @Override

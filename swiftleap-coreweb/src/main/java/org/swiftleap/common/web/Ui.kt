@@ -39,10 +39,12 @@ open class CoreWebModule : Module {
                     children = listOf(
                             BasicMenuEntry(key = "settings-me", order = 1, text = "Me: ${userName()}", link = "admin.html#me", roles = arrayOf("user")),
                             BasicMenuEntry(key = "settings-users", order = 2, text = "Users", link = "admin.html#users", roles = arrayOf("ruleadm")),
-                            BasicMenuEntry(key = "settings-tenants", order = 3, text = "Tenants", link = "admin.html#tenants", roles = arrayOf("ruleadm")),
                             BasicMenuEntry(key = "settings-updates", order = 4, text = "Updates", link = "admin.html#updates", roles = arrayOf("ruleadm")),
                             BasicMenuEntry(key = "settings-logout", order = 1000, text = "Logout", icon = "fa-sign-out", link = "logout.html", roles = arrayOf("user"))
-                    )
+                    ) + when (SecurityContext.getTenantId()) {
+                        SecurityContext.DEFAULT_TENANT_ID -> listOf(BasicMenuEntry(key = "settings-tenants", order = 3, text = "Tenants", link = "admin.html#tenants", roles = arrayOf("ruleadm")))
+                        else -> emptyList()
+                    }
             ),
             BasicMenuEntry(key = "login", order = 10001, text = "Login", link = "login.html", icon = "fa-sign-in", roles = arrayOf("guest"))
     )
@@ -119,7 +121,11 @@ open class HtmlUiRenderer {
 
         val spanStart = "<li class=\"dropdown\"> ${dropBtn} <ul class=\"dropdown-menu\" style=\"max-height: 40vh; overflow: auto;\">"
         val spanEnd = "</ul></li>"
-        val items = entry.children.map { e -> renderMenuEntry(user, e) }.fold("", { r, o -> r + o })
+        val items = entry.children
+                .sortedBy { l -> l.order }
+                .map { e -> renderMenuEntry(user, e) }
+                .fold("", { r, o -> r + o })
+
         return "$spanStart$items$spanEnd"
     }
 }

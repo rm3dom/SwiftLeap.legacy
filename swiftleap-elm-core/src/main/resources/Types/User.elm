@@ -23,6 +23,7 @@ type UserFields
     | UserName (String)
     | Email (String)
     | Activated (Bool)
+    | Managed (Bool)
 
 type alias User =
     { firstName : String
@@ -37,6 +38,7 @@ type alias User =
     , userName : String
     , email : String
     , activated : Bool
+    , managed : Bool
     }
 
 init: User
@@ -53,6 +55,7 @@ init =
     , userName = ""
     , email = ""
     , activated = False
+    , managed = True
     }
 
 decode: JD.Decoder User
@@ -70,6 +73,7 @@ decode =
         |> JDP.optional "userName" JD.string ""
         |> JDP.optional "email" JD.string ""
         |> JDP.optional "activated" JD.bool False
+        |> JDP.optional "managed" JD.bool True
 
 encode: User -> JE.Value
 encode o = 
@@ -86,6 +90,7 @@ encode o =
         , ( "userName", o.userName |> JE.string)
         , ( "email", o.email |> JE.string)
         , ( "activated", o.activated |> JE.bool)
+        , ( "managed", o.activated |> JE.bool)
         ]
 
 
