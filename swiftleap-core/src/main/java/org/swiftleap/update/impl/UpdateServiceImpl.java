@@ -53,22 +53,18 @@ public class UpdateServiceImpl implements UpdateService {
     String appName;
     @Value(value = PropKeys._NODE_NAME)
     String nodeName;
-    @Value(value = PropKeys._UPDATE_NODE_INFO_URL)
-    String updateInfoBaseUrl;
     @Autowired(required = false)
     VersionProvider versionProv;
     @Value(value = PropKeys._UPDATE_REPO_URL)
     String updateBaseUrl;
     private Catalog catalog = new Catalog();
     private Versioned patched = null;
-    private RestTemplate restTemplate = new RestTemplate();
 
     @PostConstruct
     public void init() {
         log.info("Config: Node Name: " + nodeName);
         log.info("Config: App Name: " + appName);
         log.info("Config: Update URL: " + updateBaseUrl);
-        log.info("Config: Node Tracking URL: " + updateInfoBaseUrl);
 
         updateDir.toFile().mkdirs();
         loadCatalog();
@@ -224,11 +220,13 @@ public class UpdateServiceImpl implements UpdateService {
         Path currentRelativePath = Paths.get("").toAbsolutePath();
         String[] files = currentRelativePath.toFile().list();
         for (String file : files) {
-            if (file.toLowerCase().matches(".*rules.*exe")
-                    || file.equalsIgnoreCase("run.exe")
-                    || file.equalsIgnoreCase("run.sh")
-                    || file.equalsIgnoreCase("service.exe")
-                    || file.equalsIgnoreCase("service.sh")) {
+            String f = file.toLowerCase();
+            if (f.matches(".*rules.*exe")
+                    || f.matches("phd.*exe")
+                    || f.equals("run.exe")
+                    || f.equals("run.sh")
+                    || f.equals("service.exe")
+                    || f.equals("service.sh")) {
                 try {
                     String cmd = currentRelativePath.resolve(file).toString();
                     new ProcessBuilder(cmd, "restart")
@@ -326,18 +324,6 @@ public class UpdateServiceImpl implements UpdateService {
             }
         }
         return anyOther;
-    }
-
-    private void sendNodeInfo() {
-        if (StringUtil.isNullOrWhites(updateInfoBaseUrl))
-            return;
-        try {
-            NodeInfoDbo info = getNodeInfo();
-            String url = StringUtil.trimr(updateInfoBaseUrl, '/') + "/api/v1/system/update/node";
-            restTemplate.postForEntity(url, info, Void.class);
-        } catch (Exception ex) {
-            log.error("Failed to send node info", ex);
-        }
     }
 
     @Override

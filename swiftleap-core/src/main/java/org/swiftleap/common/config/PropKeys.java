@@ -30,6 +30,9 @@ public interface PropKeys {
     String _SECURITY_TRUSTSTORE_PASSWORD = "${security.truststore.password}";
     String _SECURITY_PRIVATEKEY_ALIAS = "${security.privatekey.alias}";
     String _SECURITY_PRIVATEKEY_PASSWORD = "${security.privatekey.password}";
+    String _SECURITY_JWT_SIGNING_KEY = "${security.jwt.signingkey}";
+    String _SECURITY_JWT_AUDIENCE = "${security.jwt.audience}";
+    String _SECURITY_JWT_ISSUER = "${security.jwt.issuer}";
 
     //User options
     String _SECURITY_ADMIN_USERNAME = "${security.admin.username}";

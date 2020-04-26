@@ -22,9 +22,6 @@ package org.swiftleap.common.security;
  *
  * @author ruan
  */
-public interface SecRoleIdentifier {
-
+public interface SecRoleIdentifier extends SecRoleCode {
     Long getRoleId();
-
-    String getCode();
 }

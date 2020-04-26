@@ -20,6 +20,7 @@ package org.swiftleap.common.security;
 
 import org.swiftleap.common.collection.ReadOnlyCollection;
 import org.swiftleap.common.collection.ReadOnlyCollectionImpl;
+import org.swiftleap.common.util.StringUtil;
 
 import java.security.Principal;
 import java.util.Objects;
@@ -40,11 +41,6 @@ public interface UserPrincipal extends Principal, Tenanted {
         @Override
         public String getUserName() {
             return null;
-        }
-
-        @Override
-        public Long getUserId() {
-            return 0L;
         }
 
         @Override
@@ -73,7 +69,7 @@ public interface UserPrincipal extends Principal, Tenanted {
         }
 
         @Override
-        public ReadOnlyCollection<? extends SecRoleIdentifier> getPrincipalRoles() {
+        public ReadOnlyCollection<? extends SecRoleCode> getPrincipalRoles() {
             return new ReadOnlyCollectionImpl<>();
         }
 
@@ -106,25 +102,35 @@ public interface UserPrincipal extends Principal, Tenanted {
      */
     String getUserName();
 
-    /**
-     * May or may not be the same as name().
-     *
-     * @return
-     */
-    Long getUserId();
-
     Long getPartyId();
 
-    boolean isGuest();
+    /**
+     * Returns true if the user is managed by this system.
+     * @return
+     */
+    default boolean isManaged() {
+        return false;
+    }
 
-    boolean isSuper();
+    default boolean isGuest() {
+        return (StringUtil.isNullOrWhites(getUserName()) || getUserName().equalsIgnoreCase("guest"));
+    }
+
+    default  boolean isSuper() {
+        return (getUserName() != null
+                && getUserName().equalsIgnoreCase("system"))
+                || (getPrincipalRoles().stream().anyMatch(
+                        r -> r.getCode().equalsIgnoreCase("system")
+                        || r.getCode().equalsIgnoreCase("sysadm")
+                        || r.getCode().equalsIgnoreCase("admin")));
+    }
 
     /**
      * All active roles, including delegates.
      *
      * @return
      */
-    ReadOnlyCollection<? extends SecRoleIdentifier> getPrincipalRoles();
+    ReadOnlyCollection<? extends SecRoleCode> getPrincipalRoles();
 
     default boolean hasAnyActiveRole(Iterable<String> roles) {
         if (roles == null) {
@@ -137,7 +143,7 @@ public interface UserPrincipal extends Principal, Tenanted {
                 return true;
             if ((!sr.equalsIgnoreCase("guest")) && isSuper())
                 return true;
-            for (SecRoleIdentifier r : getPrincipalRoles()) {
+            for (SecRoleCode r : getPrincipalRoles()) {
                 if (sr.equalsIgnoreCase(r.getCode())) {
                     return true;
                 }
@@ -158,7 +164,7 @@ public interface UserPrincipal extends Principal, Tenanted {
         if ((!Objects.equals(role.getCode(), "guest")) && isSuper())
             return true;
 
-        for (SecRoleIdentifier r : getPrincipalRoles()) {
+        for (SecRoleCode r : getPrincipalRoles()) {
             if (Objects.equals(role.getCode(), r.getCode())) {
                 return true;
             }

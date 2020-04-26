@@ -85,8 +85,6 @@ public class UserDbo implements User, TenantedEntity<Long>, Audited<AuditInfo> {
     @Column(name = "surname")
     String surname;
 
-
-    @Override
     public Long getUserId() {
         return getId();
     }
@@ -213,17 +211,6 @@ public class UserDbo implements User, TenantedEntity<Long>, Audited<AuditInfo> {
         if (subject == null)
             return false;
         return subject.getPrincipals().contains(this);
-    }
-
-    @Override
-    public boolean isGuest() {
-        return (userName != null && userName.equalsIgnoreCase("guest")) || (getUserId() != null && getUserId() < 0);
-    }
-
-    @Override
-    public boolean isSuper() {
-        return (userName != null && userName.equalsIgnoreCase("system"))
-                || (getPrincipalRoles().stream().anyMatch(r -> r.getCode().equalsIgnoreCase("system") || r.getCode().equalsIgnoreCase("sysadm")));
     }
 
     private String getPath() {

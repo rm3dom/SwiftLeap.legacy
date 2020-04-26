@@ -38,6 +38,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        SecurityContext.clear();
         String host = request.getHeader("Host");
         String reqTenantId = request.getHeader("X-TenantId");
         String auth = request.getHeader("Authorization");
@@ -95,7 +96,6 @@ public class SecurityInterceptor implements HandlerInterceptor {
         //Create the context
         scx = SecurityContext.createContext(user, tenant, "guest");
         SecurityContext.push(scx);
-
         return true;
     }
 

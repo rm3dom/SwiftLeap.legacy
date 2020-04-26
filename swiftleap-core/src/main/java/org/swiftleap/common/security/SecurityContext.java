@@ -164,6 +164,9 @@ public class SecurityContext {
         }
     }
 
+    public static void clear() {
+        tl.get().clear();
+    }
 
     public static void push(SecurityContext scx) {
         checkTenantImpersonationAllowed(scx.tenant);

@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.swiftleap.common.security.SecurityService;
 import org.swiftleap.common.security.User;
+import org.swiftleap.common.security.UserPrincipal;
 import org.swiftleap.common.security.UserRequest;
 import org.swiftleap.common.security.dto.UserDto;
 import org.swiftleap.common.service.ManagedServiceException;
@@ -49,7 +50,7 @@ public class SecurityController {
     PartyService partyService;
 
 
-    UserDto mapUser(User user, String sessionId) {
+    UserDto mapUser(UserPrincipal user, String sessionId) {
         return new UserDto(user, sessionId);
     }
 
@@ -61,8 +62,7 @@ public class SecurityController {
         val session = securityService.getSession(sessionId);
         if (session == null)
             return null;
-        val user = securityService.getUser(session.getUser().getUserId());
-        return mapUser(user, session.getSessionId());
+        return mapUser(session.getUser(), session.getSessionId());
     }
 
     @Transactional(readOnly = false, noRollbackFor = {SecurityException.class})
@@ -72,8 +72,7 @@ public class SecurityController {
         if (session == null)
             return null;
         SessionUtil.setSessionId(session.getSessionId(), response);
-        val user = securityService.getUser(session.getUser().getUserId());
-        return mapUser(user, session.getSessionId());
+        return mapUser(session.getUser(), session.getSessionId());
     }
 
     @Transactional(readOnly = false, noRollbackFor = {SecurityException.class})

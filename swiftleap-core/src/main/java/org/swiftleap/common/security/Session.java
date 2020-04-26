@@ -28,6 +28,7 @@ import java.util.Date;
 @Setter
 public class Session {
     UserPrincipal user;
+    String scheme;
     String sessionId;
     Date sessionCreated;
 }

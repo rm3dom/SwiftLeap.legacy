@@ -23,9 +23,7 @@ import lombok.Setter;
 import lombok.experimental.Tolerate;
 import org.swiftleap.common.codegen.anotate.CGAlias;
 import org.swiftleap.common.codegen.anotate.CGInclude;
-import org.swiftleap.common.security.SecRoleIdentifier;
-import org.swiftleap.common.security.Tenanted;
-import org.swiftleap.common.security.User;
+import org.swiftleap.common.security.*;
 import org.swiftleap.common.types.ImageData;
 
 import java.security.Principal;
@@ -52,30 +50,39 @@ public class UserDto implements Tenanted, Principal {
     String sessionId;
     byte[] image;
     String imageMime;
+    /**
+     * True if managed by this system. False if the user was authenticated externally.
+     */
+    boolean managed = false;
 
     @Tolerate
     public UserDto() {
     }
 
     @Tolerate
-    public UserDto(User user, String sessionId) {
-        this.id = user.getId();
-        this.tenantId = user.getTenantId();
-        this.userName = user.getUserName();
-        this.email = user.getEmail();
-        this.activated = user.getStatus().isActive();
-        this.firstName = user.getFirstName();
-        this.surname = user.getSurname();
+    public UserDto(UserPrincipal principal, String sessionId) {
+        this.tenantId = principal.getTenantId();
+        this.userName = principal.getUserName();
         this.sessionId = sessionId;
-        roles = user.getPrincipalRoles()
+        roles = principal.getPrincipalRoles()
                 .stream()
-                .map(SecRoleIdentifier::getCode)
+                .map(SecRoleCode::getCode)
                 .collect(Collectors.toList());
 
-        ImageData image = user.getImage();
-        if (image != null) {
-            this.imageMime = image.getMime();
-            this.image = image.getData(ImageData.ImageSize.SMALL);
+        if(principal instanceof User) {
+            User user = (User) principal;
+            this.managed = true;
+            this.id = user.getId();
+            this.email = user.getEmail();
+            this.activated = user.getStatus().isActive();
+            this.firstName = user.getFirstName();
+            this.surname = user.getSurname();
+
+            ImageData image = user.getImage();
+            if (image != null) {
+                this.imageMime = image.getMime();
+                this.image = image.getData(ImageData.ImageSize.SMALL);
+            }
         }
     }
 
