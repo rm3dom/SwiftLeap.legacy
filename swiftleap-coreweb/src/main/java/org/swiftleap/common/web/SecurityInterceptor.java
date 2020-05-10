@@ -34,7 +34,7 @@ import java.security.Principal;
 @Component
 public class SecurityInterceptor implements HandlerInterceptor {
     @Autowired
-    SecurityService securityService;
+    AuthenticationService securityService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

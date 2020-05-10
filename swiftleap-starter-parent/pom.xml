@@ -5,14 +5,13 @@
     <parent>
         <groupId>org.swiftleap</groupId>
         <artifactId>swiftleap-dependencies</artifactId>
-        <version>1.0.2.RELEASE</version>
+        <version>1.0.3.RELEASE</version>
     </parent>
 
     <artifactId>swiftleap-starter-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>swiftleap-starter-kotlinjs</module>
         <module>swiftleap-starter-springboot</module>
     </modules>
 </project>

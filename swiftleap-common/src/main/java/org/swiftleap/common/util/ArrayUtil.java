@@ -16,8 +16,6 @@
  */
 package org.swiftleap.common.util;
 
-import org.swiftleap.common.types.Tuple2;
-
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -51,9 +49,11 @@ public class ArrayUtil {
         return c;
     }
 
+    /*
     public static <T> Tuple2<T, T> flip(T a, T b) {
         return new Tuple2<>(b, a);
     }
+     */
 
     @SuppressWarnings("varargs")
     public static <T> T[] flip(T[] a, T... b) {

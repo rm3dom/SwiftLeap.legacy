@@ -16,13 +16,11 @@
  */
 
 package org.swiftleap.common.security;
-
-
-import org.swiftleap.common.collection.ReadOnlyCollection;
-import org.swiftleap.common.collection.ReadOnlyCollectionImpl;
 import org.swiftleap.common.util.StringUtil;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -69,8 +67,8 @@ public interface UserPrincipal extends Principal, Tenanted {
         }
 
         @Override
-        public ReadOnlyCollection<? extends SecRoleCode> getPrincipalRoles() {
-            return new ReadOnlyCollectionImpl<>();
+        public Collection<? extends SecRoleCode> getPrincipalRoles() {
+            return new ArrayList<>(0);
         }
 
         @Override
@@ -130,7 +128,7 @@ public interface UserPrincipal extends Principal, Tenanted {
      *
      * @return
      */
-    ReadOnlyCollection<? extends SecRoleCode> getPrincipalRoles();
+    Collection<? extends SecRoleCode> getPrincipalRoles();
 
     default boolean hasAnyActiveRole(Iterable<String> roles) {
         if (roles == null) {
@@ -152,7 +150,7 @@ public interface UserPrincipal extends Principal, Tenanted {
         return false;
     }
 
-    default boolean hasActiveRole(SecRoleIdentifier role) {
+    default boolean hasActiveRole(SecRoleCode role) {
         if (role == null || role.getCode() == null) {
             return false;
         }
@@ -172,8 +170,8 @@ public interface UserPrincipal extends Principal, Tenanted {
         return false;
     }
 
-    default boolean hasAnyActiveRole(SecRoleIdentifier... roles) {
-        for (SecRoleIdentifier r : roles) {
+    default boolean hasAnyActiveRole(SecRoleCode... roles) {
+        for (SecRoleCode r : roles) {
             if (hasActiveRole(r)) {
                 return true;
             }

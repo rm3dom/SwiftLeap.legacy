@@ -24,10 +24,8 @@ import java.util.stream.Stream;
 /**
  * Created by ruans on 2017/06/04.
  */
-public interface SecurityService {
+public interface SecurityService extends AuthenticationService {
     Tenant createTenant(TenantRequest request);
-
-    Tenant getTenant(Integer tenantId);
 
     Stream<? extends Tenant> findTenants();
 
@@ -63,13 +61,10 @@ public interface SecurityService {
 
     Session loginApi(String userName, String password) throws ManagedSecurityException;
 
-    Session getSession(String sessionId);
 
     Stream<? extends User> findByRoles(String[] roles);
 
     Stream<? extends User> find(String any, User.UserStatus status, Range range);
-
-    Tenant getTenantByFqdn(String host);
 
     Tenant updateTenant(TenantRequest tenant);
 

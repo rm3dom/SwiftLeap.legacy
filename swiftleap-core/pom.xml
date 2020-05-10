@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.swiftleap</groupId>
         <artifactId>swiftleap</artifactId>
-        <version>1.0.2.RELEASE</version>
+        <version>1.0.3.RELEASE</version>
     </parent>
 
     <artifactId>swiftleap-core</artifactId>
@@ -13,10 +13,17 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.swiftleap</groupId>
+            <artifactId>swiftleap-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.googlecode.libphonenumber</groupId>
             <artifactId>libphonenumber</artifactId>

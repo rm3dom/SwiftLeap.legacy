@@ -14,35 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.swiftleap.common.web.api.system.model;
-
-import lombok.Getter;
-import lombok.Setter;
-import org.swiftleap.common.codegen.anotate.CGAlias;
-import org.swiftleap.common.security.Tenant;
+package org.swiftleap.common.config;
 
 /**
- * Created by ruans on 2017/08/05.
+ * Created by ruans on 2017/06/08.
  */
-@CGAlias("Tenant")
-@Getter
-@Setter
-public class TenantDto {
-    Integer tenantId;
-    String name;
-    long partyId;
-    String fqdn;
-    String countryCode;
-    boolean activated;
+public interface Config {
+    void delete(String key);
 
-    public TenantDto() {
-    }
+    void set(String key, Object value);
 
-    public TenantDto(Tenant tenant) {
-        this.tenantId = tenant.getTenantId();
-        this.name = tenant.getName();
-        this.fqdn = tenant.getFqdn();
-        this.countryCode = tenant.getCountryCode();
-        this.activated = tenant.getStatus().isActive();
-    }
+    long get(String key, long def);
+
+    String get(String key);
+
+    String get(String key, String def);
 }

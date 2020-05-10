@@ -31,8 +31,6 @@ public interface Tenant extends TenantReference {
 
     String getName();
 
-    Long getPartyId();
-
     String getFqdn();
 
     String getCountryCode();

@@ -256,11 +256,6 @@ public class SecurityContext {
             }
 
             @Override
-            public Long getPartyId() {
-                return 0L;
-            }
-
-            @Override
             public String getFqdn() {
                 return "localhost";
             }

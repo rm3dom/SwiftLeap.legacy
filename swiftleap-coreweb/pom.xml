@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.swiftleap</groupId>
         <artifactId>swiftleap</artifactId>
-        <version>1.0.2.RELEASE</version>
+        <version>1.0.3.RELEASE</version>
     </parent>
 
     <artifactId>swiftleap-coreweb</artifactId>
@@ -17,13 +17,6 @@
             <artifactId>swiftleap-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>org.swiftleap</groupId>
-            <artifactId>swiftleap-party</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>org.swiftleap</groupId>
             <artifactId>swiftleap-elm-core</artifactId>
@@ -53,55 +46,6 @@
                                     <outputDirectory>${project.build.directory}/generated-sources/elm</outputDirectory>
                                     <includes>**</includes>
                                 </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>org.jetbrains.kotlin</groupId>
-                                    <artifactId>kotlin-stdlib-js</artifactId>
-                                    <version>${kotlin.version}</version>
-                                    <outputDirectory>${jslib.build.dir}</outputDirectory>
-                                    <includes>**/*.js</includes>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>org.jetbrains.kotlinx</groupId>
-                                    <artifactId>kotlinx-html-js</artifactId>
-                                    <version>${kotlinx-html.version}</version>
-                                    <outputDirectory>${jslib.build.dir}</outputDirectory>
-                                    <includes>**/*.js</includes>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>org.jetbrains</groupId>
-                                    <artifactId>kotlin-react</artifactId>
-                                    <version>${kotlin-react.version}</version>
-                                    <outputDirectory>${jslib.build.dir}</outputDirectory>
-                                    <includes>**/*.js</includes>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>org.jetbrains</groupId>
-                                    <artifactId>kotlin-react-dom</artifactId>
-                                    <version>${kotlin-react.version}</version>
-                                    <outputDirectory>${jslib.build.dir}</outputDirectory>
-                                    <includes>**/*.js</includes>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>org.jetbrains</groupId>
-                                    <artifactId>kotlin-extensions</artifactId>
-                                    <version>${kotlin-extensions.version}</version>
-                                    <outputDirectory>${jslib.build.dir}</outputDirectory>
-                                    <includes>**/*.js</includes>
-                                </artifactItem>
-
-                                <artifactItem>
-                                    <groupId>org.jetbrains.kotlinx</groupId>
-                                    <artifactId>kotlinx-serialization-runtime-js</artifactId>
-                                    <version>${kotlinx-serialization.version}</version>
-                                    <outputDirectory>${jslib.build.dir}</outputDirectory>
-                                    <includes>**/*.js</includes>
-                                </artifactItem>
-
                             </artifactItems>
                         </configuration>
                     </execution>
