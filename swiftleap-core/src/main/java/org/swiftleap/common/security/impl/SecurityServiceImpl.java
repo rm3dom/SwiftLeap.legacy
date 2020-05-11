@@ -37,6 +37,7 @@ import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.*;
+import java.security.Principal;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -549,6 +550,11 @@ public class SecurityServiceImpl implements SecurityService {
             closeContext.apply(ldapContext);
         }
         return null;
+    }
+
+    @Override
+    public Principal getPrincipal() {
+        return SecurityContext.getPrincipal();
     }
 
     @Override

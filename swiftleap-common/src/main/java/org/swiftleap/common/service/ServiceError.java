@@ -19,7 +19,8 @@
 package org.swiftleap.common.service;
 
 
-import javax.servlet.ServletException;
+import org.springframework.util.ClassUtils;
+
 import java.util.Random;
 
 /**
@@ -31,8 +32,15 @@ import java.util.Random;
 public interface ServiceError {
 
     static Throwable unwind(Throwable ex) {
-        if (ex instanceof ServletException && ex.getCause() != null) {
-            return unwind(ex.getCause());
+        final String sex = "javax.servlet.ServletException";
+        try {
+            if (ClassUtils.isPresent(sex, null)) {
+                final Class<?> sexClass = ClassUtils.forName(sex, null);
+                if (sexClass.isAssignableFrom(ex.getClass()) && ex.getCause() != null)
+                    return unwind(ex.getCause());
+            }
+        } catch (ClassNotFoundException e) {
+            return ex;
         }
         return ex;
     }

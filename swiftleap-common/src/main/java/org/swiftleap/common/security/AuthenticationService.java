@@ -1,6 +1,14 @@
 package org.swiftleap.common.security;
 
+import java.security.Principal;
+
 public interface AuthenticationService {
+    /**
+     * Get the current user.
+     * @return Current user.
+     */
+    Principal getPrincipal();
+
     Session getSession(String sessionId);
 
     Tenant getTenant(Integer tenantId);

@@ -26,6 +26,7 @@ import org.swiftleap.ui.UiManager;
 import org.swiftleap.update.UpdateService;
 import org.swiftleap.update.Versioned;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

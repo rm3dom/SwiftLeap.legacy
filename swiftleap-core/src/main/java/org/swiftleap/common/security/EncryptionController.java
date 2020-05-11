@@ -25,7 +25,7 @@ import java.security.KeyStore;
 /**
  * Created by ruan on 8/18/14.
  */
-public interface EncryptionController {
+public interface EncryptionController extends ObsService {
 
     Cipher getDataCipher(int mode) throws GeneralSecurityException, IOException;
 
@@ -40,10 +40,6 @@ public interface EncryptionController {
     byte[] decrypt3DES(byte[] data) throws GeneralSecurityException, IOException;
 
     String encryptPassword(String password) throws GeneralSecurityException, IOException;
-
-    String obfuscatePassword(String password) throws GeneralSecurityException, IOException;
-
-    String unObfuscatePassword(String obfuscated) throws GeneralSecurityException, IOException;
 
     KeyStore getKeyStore() throws GeneralSecurityException, IOException;
 
