@@ -22,7 +22,7 @@ import org.swiftleap.common.util.StringUtil;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-@Converter
+//@Converter
 public class StringArrayConverter implements AttributeConverter<String[], String> {
 
 

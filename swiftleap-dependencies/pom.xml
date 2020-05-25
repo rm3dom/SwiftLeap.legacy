@@ -329,6 +329,7 @@
                         <compilerPlugins>
                             <plugin>kotlinx-serialization</plugin>
                         </compilerPlugins>
+                        <jvmTarget>${java.version}</jvmTarget>
                     </configuration>
                     <dependencies>
                         <dependency>
