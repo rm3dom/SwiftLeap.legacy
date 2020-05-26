@@ -42,37 +42,42 @@ import java.util.List;
  */
 public abstract class AbstractJavaSourceCompiler {
     static final Logger log = LoggerFactory.getLogger(AbstractJavaSourceCompiler.class);
+    protected List<String> classPaths = new ArrayList<>();
+    protected ClassLoader classLoader;
 
-    public void compileCode(String scratchDir, final ClassLoader classLoader, final String classPathOutputDir, final String className, final String code) throws Exception {
-        compileCode(scratchDir, classLoader, classPathOutputDir, new JavaSourceObject(className, code));
+    protected AbstractJavaSourceCompiler(String scratchDir, ClassLoader classLoader, Class<?>... classPath) throws IOException {
+        for(Class<?> c : classPath) {
+            classPaths.add(c.getProtectionDomain().getCodeSource().getLocation().getPath());
+        }
+        this.classLoader = classLoader;
+        String[] solved = extractJars(solveClassPath(classLoader), scratchDir);
+        classPaths.addAll(Arrays.asList(solved));
+    }
+
+    public void compileCode(final String classPathOutputDir, final String className, final String code) throws Exception {
+        compileCode(classPathOutputDir, new JavaSourceObject(className, code));
     }
 
 
-    public URL compileCode(final String scratchDir, final ClassLoader classLoader, final String classPathOutputDir, final JavaSourceObject jsfs) throws Exception {
+    public URL compileCode(final String classPathOutputDir, final JavaSourceObject jsfs) throws Exception {
         JavaCompiler jc = ToolProvider.getSystemJavaCompiler();
         if (jc == null)
             throw new Exception("Compiler unavailable. Program must be run with full JDK.");
 
         Iterable<? extends JavaFileObject> fileObjects = Arrays.asList(jsfs);
 
-        List<String> options = new ArrayList<>();
-        options.add("-d");
-        //options.add("-proc:none");
-        options.add(classPathOutputDir);
-        options.add("-classpath");
+        String[] classPath = ArrayUtil.concat(classPaths.toArray(new String[0]), classPathOutputDir);
 
-        URL[] urls = solveClassPath(classLoader);
-
-        String[] strUrls = ArrayUtil.concat(extractJars(urls, scratchDir),
-                classPathOutputDir,
-                AbstractJavaSourceCompiler.class.getProtectionDomain().getCodeSource().getLocation().getPath(),
-                this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
-
-        String classPathStr = StringUtil.join(File.pathSeparator, strUrls);
+        String classPathStr = StringUtil.join(File.pathSeparator, classPath);
         if (!classPathStr.contains("swiftleap-common")) {
             throw new SystemErrorException("Unable to solve swiftleap-common in classpath. This happens when the class loader is not an URLClassLoaders");
         }
 
+        List<String> options = new ArrayList<>();
+        options.add("-proc:none");
+        options.add("-d");
+        options.add(classPathOutputDir);
+        options.add("-classpath");
         options.add(classPathStr);
 
         log.debug("Using compiler options: " + StringUtil.join(" ", options));
