@@ -40,15 +40,15 @@ import java.util.List;
 /**
  * Created by ruans on 2018/01/09.
  */
-public class JavaSourceCompiler {
-    static final Logger log = LoggerFactory.getLogger(JavaSourceCompiler.class);
+public abstract class AbstractJavaSourceCompiler {
+    static final Logger log = LoggerFactory.getLogger(AbstractJavaSourceCompiler.class);
 
-    public static void compileCode(String scratchDir, final ClassLoader classLoader, final String classPathOutputDir, final String className, final String code) throws Exception {
+    public void compileCode(String scratchDir, final ClassLoader classLoader, final String classPathOutputDir, final String className, final String code) throws Exception {
         compileCode(scratchDir, classLoader, classPathOutputDir, new JavaSourceObject(className, code));
     }
 
 
-    public static URL compileCode(final String scratchDir, final ClassLoader classLoader, final String classPathOutputDir, final JavaSourceObject jsfs) throws Exception {
+    public URL compileCode(final String scratchDir, final ClassLoader classLoader, final String classPathOutputDir, final JavaSourceObject jsfs) throws Exception {
         JavaCompiler jc = ToolProvider.getSystemJavaCompiler();
         if (jc == null)
             throw new Exception("Compiler unavailable. Program must be run with full JDK.");
@@ -57,27 +57,33 @@ public class JavaSourceCompiler {
 
         List<String> options = new ArrayList<>();
         options.add("-d");
+        //options.add("-proc:none");
         options.add(classPathOutputDir);
         options.add("-classpath");
 
         URL[] urls = solveClassPath(classLoader);
 
-        String[] strUrls = ArrayUtil.concat(extractJars(urls, scratchDir), classPathOutputDir);
+        String[] strUrls = ArrayUtil.concat(extractJars(urls, scratchDir),
+                classPathOutputDir,
+                AbstractJavaSourceCompiler.class.getProtectionDomain().getCodeSource().getLocation().getPath(),
+                this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
 
         String classPathStr = StringUtil.join(File.pathSeparator, strUrls);
-        if (!classPathStr.contains("swiftleap-core")) {
-            throw new SystemErrorException("Unable to solve swiftleap-core in classpath. This happens when the class loader is not an URLClassLoaders");
+        if (!classPathStr.contains("swiftleap-common")) {
+            throw new SystemErrorException("Unable to solve swiftleap-common in classpath. This happens when the class loader is not an URLClassLoaders");
         }
 
         options.add(classPathStr);
 
         log.debug("Using compiler options: " + StringUtil.join(" ", options));
 
+
         StringWriter output = new StringWriter();
         boolean success = jc
                 .getTask(output, null, null, options, null, fileObjects)
                 .call();
         if (success) {
+            log.debug(output.toString());
             log.debug("Class has been successfully compiled");
         } else {
             throw new Exception("Compilation failed :" + toPrettyError(output));
@@ -114,7 +120,7 @@ public class JavaSourceCompiler {
      * @return
      */
     private static URL[] solveClassPath(ClassLoader classLoader) {
-        URL[] urls = new URL[0];
+        URL[] urls = new URL[]{};
         if (classLoader == null)
             return urls;
         if (classLoader instanceof URLClassLoader) {

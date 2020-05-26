@@ -294,6 +294,12 @@
                 <artifactId>tagsoup</artifactId>
                 <version>1.2.1</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>3.4.5</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -326,6 +332,9 @@
                     <artifactId>kotlin-maven-plugin</artifactId>
                     <version>${kotlin.version}</version>
                     <configuration>
+                        <args>
+                            <arg>-Xjvm-default=compatibility</arg>
+                        </args>
                         <compilerPlugins>
                             <plugin>kotlinx-serialization</plugin>
                         </compilerPlugins>
