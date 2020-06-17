@@ -79,8 +79,11 @@ public class UpdateServiceImpl implements UpdateService {
 
     private void loadCatalog() {
         File catFile = updateDir.resolve("catalog.json").toFile();
-        if (!catFile.exists())
+        log.debug("Loading catalog from " + catFile);
+        if (!catFile.exists()) {
+            log.debug("Catalog does not exist " + catFile);
             return;
+        }
         try {
             catalog = mapper.readValue(catFile, Catalog.class);
         } catch (IOException ex) {
@@ -130,10 +133,15 @@ public class UpdateServiceImpl implements UpdateService {
 
     private void downloadCatalog() {
         //Updates is disabled
-        if (!updatesEnabled())
+        if (!updatesEnabled()) {
+            log.debug("Updates disabled");
             return;
+        }
+        log.info("Looking for updates URL: " + updateBaseUrl);
         File catFile = updateDir.resolve("catalog.json").toFile();
         try {
+            URL url = getUrl("catalog.json");
+            log.debug("Downloading catalog from " + url + " to " + catFile);
             IOUtil.writeFullyCloseAll(new FileOutputStream(catFile), getUrl("catalog.json").openStream());
             loadCatalog();
             downloadVersions();
@@ -144,9 +152,13 @@ public class UpdateServiceImpl implements UpdateService {
 
     private void downloadVersions() throws IOException {
         forEachAvailUpdate((ver, file, hashFile, hash) -> {
-            if (file.exists() && hashesMatch(ver, hash))
+            if (file.exists() && hashesMatch(ver, hash)) {
+                log.debug("Not downloading updating as its up to date: " + ver.getFileName());
                 return true;
+            }
+
             try {
+                log.info("Downloading update: " + ver.getFileName());
                 IOUtil.writeFullyCloseAll(new FileOutputStream(file), getUrl(ver.getFileName()).openStream());
                 String md5 = MD5Util.calculateMD5Hex(file);
                 IOUtil.writeFileFully(hashFile, md5);
@@ -169,19 +181,26 @@ public class UpdateServiceImpl implements UpdateService {
                 .sorted().collect(Collectors.toList());
 
         for (CatalogVersion ver : versionToCheck) {
+            log.debug("For each update visiting: " + ver.getFileName());
+
             File file = updateDir.resolve(ver.getFileName()).toFile();
             File hashFile = updateDir.resolve(ver.getFileName() + ".md5").toFile();
             String hash = "";
-            if (hashFile.exists())
+            if (hashFile.exists()) {
+                log.debug("Reading hash: " + ver.getFileName());
                 hash = IOUtil.readFileFullyAsString(hashFile.getAbsolutePath());
+            }
             if (!consumer.accept(ver, file, hashFile, hash))
                 break;
         }
     }
 
     private URL getUrl(String part) throws MalformedURLException {
-        String url = StringUtil.trimr(updateBaseUrl, '/') + "/";
-        return new URL(url + part);
+        String url = StringUtil.trimr(updateBaseUrl, '/')
+                + "/"
+                + StringUtil.triml(part, '/')
+                + "?v=" + System.currentTimeMillis();
+        return new URL(url);
     }
 
     @Override

@@ -18,8 +18,10 @@ package org.swiftleap.common.security;
 
 
 import lombok.val;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.swiftleap.common.service.ExecutionContext;
 import org.swiftleap.common.config.Config;
 import org.swiftleap.common.security.dto.UserDto;
 import org.swiftleap.common.security.impl.SecurityAppCtx;
@@ -318,5 +320,4 @@ public class SecurityContext {
         push(createContext(sc.channel, principal, sc.tenant, roleNames));
         return () -> pop();
     }
-
 }
