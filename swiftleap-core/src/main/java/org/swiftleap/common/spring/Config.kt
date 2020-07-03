@@ -15,6 +15,7 @@ import javax.sql.DataSource
 @PropertySource(value = ["classpath:core.properties"])
 @EnableTransactionManagement
 @Configuration("org.swiftleap.common.spring")
+@ComponentScan("org.swiftleap")
 open class Config {
     private val log = LoggerFactory.getLogger(Config::class.java)
     @Primary
