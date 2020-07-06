@@ -50,7 +50,8 @@ update msg model =
                     msg
 
                 _ ->
-                    Debug.log "#msg:" msg
+                    msg
+                    --Debug.log "#msg:" msg
 
         host =
             Core.getHost model.core
