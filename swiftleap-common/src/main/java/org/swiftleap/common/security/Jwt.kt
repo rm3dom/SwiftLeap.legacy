@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import org.swiftleap.common.collection.ReadOnlyCollection
-import org.swiftleap.common.collection.ReadOnlyCollectionImpl
 import java.util.*
 
 object ClaimTypes {
@@ -55,12 +53,11 @@ private class SecRoleCodeImpl(val role: String) : SecRoleCode {
 }
 
 class ClaimsPrincipal(@JsonIgnore val claims : Claims) : UserPrincipal {
-    private val _tenantId : Int = claims.getFirst(ClaimTypes.tenantId)?.toIntOrNull() ?: SecurityContext.DEFAULT_TENANT_ID
+    private val _tenantId : Int = claims.getFirst(ClaimTypes.tenantId)?.toIntOrNull() ?: 0
     private val _uniqueName : String = claims.getFirst(ClaimTypes.uniqueName) ?: ""
     private val _name : String = claims.getFirst(ClaimTypes.givenName) ?: ""
     private val _surname : String = claims.getFirst(ClaimTypes.surname) ?: ""
-    private val _roles =
-            ReadOnlyCollectionImpl<SecRoleCode>(claims.getAll(ClaimTypes.role).map { SecRoleCodeImpl(it) })
+    private val _roles = claims.getAll(ClaimTypes.role).map { SecRoleCodeImpl(it) }
 
     override fun getName(): String  = _uniqueName
 
@@ -74,7 +71,7 @@ class ClaimsPrincipal(@JsonIgnore val claims : Claims) : UserPrincipal {
 
     override fun getTenantId(): Int = _tenantId
 
-    override fun getPrincipalRoles(): ReadOnlyCollection<out SecRoleCode> = _roles
+    override fun getPrincipalRoles(): Collection<SecRoleCode> = _roles
 }
 
 object Jwt {

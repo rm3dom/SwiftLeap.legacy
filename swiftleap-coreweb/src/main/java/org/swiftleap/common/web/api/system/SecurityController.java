@@ -34,6 +34,7 @@ import org.swiftleap.common.web.api.system.model.SearchUsersRequestDto;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -64,7 +65,7 @@ public class SecurityController {
     @Transactional(readOnly = false, noRollbackFor = {SecurityException.class})
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public UserDto login(@RequestBody AuthRequestDto auth, HttpServletResponse response) throws ManagedServiceException {
-        val session = securityService.login(auth.getUserName(), auth.getPassword());
+        val session = securityService.login(auth.getUserName(), auth.getPassword(), new HashMap<>());
         if (session == null)
             return null;
         SessionUtil.setSessionId(session.getSessionId(), response);

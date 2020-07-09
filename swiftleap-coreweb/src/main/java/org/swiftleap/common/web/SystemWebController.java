@@ -30,6 +30,7 @@ import org.swiftleap.common.web.model.LoginRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -96,7 +97,7 @@ public class SystemWebController extends AbstractUiController {
                             @ModelAttribute LoginRequest login) {
         return SecurityContext.doImpersonation(login.getTenantId(), () -> {
             try {
-                val session = securityService.login(login.getName(), login.getPassword());
+                val session = securityService.login(login.getName(), login.getPassword(), new HashMap<>());
                 if (session == null)
                     throw new SecurityException("Invalid username or password");
                 SessionUtil.setSessionId(session.getSessionId(), response);

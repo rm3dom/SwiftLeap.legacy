@@ -27,6 +27,7 @@ import org.swiftleap.common.util.StringUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
+import java.util.HashMap;
 
 /**
  * Created by ruans on 2017/06/12.
@@ -34,7 +35,7 @@ import java.security.Principal;
 @Component
 public class SecurityInterceptor implements HandlerInterceptor {
     @Autowired
-    AuthenticationService securityService;
+    SecurityService securityService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -80,7 +81,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
             session = SecurityContext.doImpersonation(tenant,
                     () -> {
                         try {
-                            return securityService.loginApi(parts.length > 0 ? parts[0] : "", parts.length > 1 ? parts[1] : "");
+                            return securityService.loginApi(parts.length > 0 ? parts[0] : "", parts.length > 1 ? parts[1] : "", new HashMap<>());
                         } catch (ManagedSecurityException e) {
                             throw new SecurityException(e);
                         }

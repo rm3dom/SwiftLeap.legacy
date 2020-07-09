@@ -100,7 +100,8 @@ public interface UserPrincipal extends Principal, Tenanted {
      */
     String getUserName();
 
-    Long getPartyId();
+    @Deprecated
+    default Long getPartyId() { return 0L; }
 
     /**
      * Returns true if the user is managed by this system.

@@ -25,6 +25,8 @@ import java.util.stream.Stream;
  * Created by ruans on 2017/06/04.
  */
 public interface SecurityService extends AuthenticationService {
+    Session getSession(String sessionId);
+
     Tenant createTenant(TenantRequest request);
 
     Stream<? extends Tenant> findTenants();
@@ -56,11 +58,6 @@ public interface SecurityService extends AuthenticationService {
     User getUser(Long userId);
 
     User findUserByCred(String userName, String email, String password);
-
-    Session login(String userName, String password) throws ManagedSecurityException;
-
-    Session loginApi(String userName, String password) throws ManagedSecurityException;
-
 
     Stream<? extends User> findByRoles(String[] roles);
 

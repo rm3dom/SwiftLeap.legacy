@@ -2,8 +2,6 @@ package org.swiftleap.common.security
 
 import org.junit.Test
 
-import org.junit.Assert.*
-
 class JwtTest {
 
     @Test

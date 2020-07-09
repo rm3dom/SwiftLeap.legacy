@@ -31,6 +31,6 @@ class TestSecurityService {
 
     @Test
     fun testLogin() {
-        secSrv.login("phdsys", "Coffee350")
+        secSrv.login("phdsys", "Coffee350", mutableMapOf())
     }
 }

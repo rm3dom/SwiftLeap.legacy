@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.swiftleap.common.config.ConfigService;
@@ -29,6 +30,7 @@ import org.swiftleap.common.persistance.SequenceGenerator;
 import org.swiftleap.common.security.*;
 import org.swiftleap.common.security.impl.model.*;
 import org.swiftleap.common.service.BadRequestException;
+import org.swiftleap.common.service.ServiceException;
 import org.swiftleap.common.service.SystemErrorException;
 import org.swiftleap.common.types.Range;
 import org.swiftleap.common.util.StringUtil;
@@ -45,6 +47,7 @@ import java.util.stream.Stream;
 /**
  * Created by ruans on 2017/06/04.
  */
+@Primary
 @Service
 public class SecurityServiceImpl implements SecurityService {
     final static HashMap<String, Session> sessions = new HashMap<>();
@@ -423,7 +426,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public Session login(String userName, String password) throws ManagedSecurityException {
+    public Session login(String userName, String password, Map<String, Object> opts) throws ManagedSecurityException {
         User user = null;
         if (ldapEnabled && !userName.equalsIgnoreCase(adminUserName))
             user = loginLdap(userName, password);
@@ -450,9 +453,14 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public Session loginApi(String userName, String password) throws ManagedSecurityException {
+    public Session loginApi(String userName, String password, Map<String, Object> opts) throws ManagedSecurityException {
         User user = findUserByCred(userName, null, password);
         return createSession(user);
+    }
+
+    @Override
+    public Session loginApi(String apiKey, Map<String, Object> opts) throws ManagedSecurityException {
+        throw new ServiceException("Not supported");
     }
 
     private Session createSession(User user) throws ManagedSecurityException {
@@ -550,11 +558,6 @@ public class SecurityServiceImpl implements SecurityService {
             closeContext.apply(ldapContext);
         }
         return null;
-    }
-
-    @Override
-    public Principal getPrincipal() {
-        return SecurityContext.getPrincipal();
     }
 
     @Override
