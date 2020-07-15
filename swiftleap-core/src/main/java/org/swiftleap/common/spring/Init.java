@@ -34,10 +34,7 @@ import org.swiftleap.common.security.*;
 import org.swiftleap.common.security.impl.SecurityAppCtx;
 
 import javax.annotation.PostConstruct;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.*;
 import javax.persistence.EntityManagerFactory;
 import java.util.Collection;
 
@@ -107,11 +104,14 @@ public class Init {
                 }
         };
 
+        HostnameVerifier allHostsValid = (hostname, session) -> true;
+
         // Install the all-trusting trust manager
         try {
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
         } catch (Exception e) {
         }
     }

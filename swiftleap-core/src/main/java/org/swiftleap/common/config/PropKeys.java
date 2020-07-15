@@ -42,6 +42,7 @@ public interface PropKeys {
 
     //Ldap authentication
     String _SECURITY_LDAP_ENABLED = "${security.ldap.enabled}";
+    String _SECURITY_LDAP_SSL_ENABLED = "${security.ldap.ssl.enabled}";
     String _SECURITY_LDAP_PORT = "${security.ldap.port}";
     String _SECURITY_LDAP_DNBASE = "${security.ldap.dnbase}";
     String _SECURITY_LDAP_HOST = "${security.ldap.host}";

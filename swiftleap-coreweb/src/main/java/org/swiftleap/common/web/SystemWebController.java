@@ -19,6 +19,7 @@ package org.swiftleap.common.web;
 
 import lombok.val;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -90,6 +91,7 @@ public class SystemWebController extends AbstractUiController {
         return loginResponse(model, request, login);
     }
 
+    @Transactional
     @RequestMapping(value = "login.html", method = RequestMethod.POST)
     public String loginPost(Map<String, Object> model,
                             HttpServletRequest request,

@@ -71,12 +71,16 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Value(value = PropKeys._SECURITY_LDAP_ENABLED)
     private boolean ldapEnabled = false;
+    @Value(value = PropKeys._SECURITY_SSL_TRUSTALL)
+    private boolean sslTrustAll = true;
     @Value(value = PropKeys._SECURITY_LDAP_DNBASE)
     private String ldapDnBase = "DC=PHD,DC=com,DC=au";
     @Value(value = PropKeys._SECURITY_LDAP_HOST)
     private String ldapHost = "10.20.60.10";
     @Value(value = PropKeys._SECURITY_LDAP_PORT)
-    private String ldapPort = "389";
+    private int ldapPort = 389;
+    @Value(value = PropKeys._SECURITY_LDAP_SSL_ENABLED)
+    private boolean ldapSsl = false;
     @Value(value = PropKeys._SECURITY_LDAP_USERDN)
     private String ldapUserDn = "CN=PHD System,CN=Users,DC=PHD,DC=com,DC=au";
     @Value(value = PropKeys._SECURITY_LDAP_PASSWORD)
@@ -492,13 +496,21 @@ public class SecurityServiceImpl implements SecurityService {
 
         DirContext ldapContext = null;
         try {
+            String proto = "ldap";
+            if(ldapPort == 636 || ldapPort == 3269 || ldapSsl)
+                proto = "ldaps";
+
             Properties ldapEnv = new Properties();
             ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-            ldapEnv.put(Context.PROVIDER_URL, "ldap://" + ldapHost + ":" + ldapPort);
+            ldapEnv.put(Context.PROVIDER_URL, proto + "://" + ldapHost + ":" + ldapPort);
             ldapEnv.put(Context.SECURITY_AUTHENTICATION, "simple");
             ldapEnv.put(Context.SECURITY_PRINCIPAL, ldapUserDn);
             ldapEnv.put(Context.SECURITY_CREDENTIALS, Obs.decryptIfObs(ldapUserPassword));
-            //ldapEnv.put(Context.SECURITY_PROTOCOL, "ssl");
+
+            if(proto.equalsIgnoreCase("ldaps") && sslTrustAll) {
+                ldapEnv.put("java.naming.ldap.factory.socket", "org.swiftleap.common.security.impl.JndiTrustAllSocketFactory");
+            }
+
             ldapContext = new InitialDirContext(ldapEnv);
 
             // Create the search controls
@@ -553,6 +565,7 @@ public class SecurityServiceImpl implements SecurityService {
             }
 
         } catch (NamingException ex) {
+            LOG.error("Failed to connect to Active Directory", ex);
             throw new SecurityException("Unable to connect to Active Directory", ex);
         } finally {
             closeContext.apply(ldapContext);
