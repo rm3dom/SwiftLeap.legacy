@@ -7,28 +7,32 @@ import io.jsonwebtoken.SignatureAlgorithm
 import java.util.*
 
 object ClaimTypes {
-    const val securityLevel = "SecurityLevel";
-    const val uniqueName = "unique_name";
-    const val authenticationInstant =  "authenticationinstant";
-    const val authenticationMethod =  "authenticationmethod";
-    const val cookiePath =  "cookiepath";
-    const val denyOnlyPrimarySid =  "denyonlyprimarysid";
-    const val denyOnlyPrimaryGroupSid =  "denyonlyprimarygroupsid";
-    const val denyOnlyWindowsDeviceGroup =  "denyonlywindowsdevicegroup";
-    const val dsa =  "dsa";
-    const val expiration =  "expiration";
-    const val expired =  "expired";
-    const val groupSid =  "groupsid";
-    const val isPersistent =  "ispersistent";
-    const val primaryGroupSid =  "primarygroupsid";
-    const val primarySid =  "primarysid";
-    const val role =  "role";
-    const val serialNumber =  "serialnumber";
-    const val userData =  "userdata";
-    const val surname = "surname";
-    const val givenName = "givenname";
-    const val version =  "version";
-    const val tenantId = "tenantId";
+    const val branchId = "branchId"
+    const val mainRefType = "mainRefType"
+    const val departmentId = "departmentId"
+    const val securityLevel = "securityLevel"
+    const val tillFlag = "tillFlag"
+    const val uniqueName = "unique_name"
+    const val authenticationInstant =  "authenticationinstant"
+    const val authenticationMethod =  "authenticationmethod"
+    const val cookiePath =  "cookiepath"
+    const val denyOnlyPrimarySid =  "denyonlyprimarysid"
+    const val denyOnlyPrimaryGroupSid =  "denyonlyprimarygroupsid"
+    const val denyOnlyWindowsDeviceGroup =  "denyonlywindowsdevicegroup"
+    const val dsa =  "dsa"
+    const val expiration =  "expiration"
+    const val expired =  "expired"
+    const val groupSid =  "groupsid"
+    const val isPersistent =  "ispersistent"
+    const val primaryGroupSid =  "primarygroupsid"
+    const val primarySid =  "primarysid"
+    const val role =  "role"
+    const val serialNumber =  "serialnumber"
+    const val userData =  "userdata"
+    const val surname = "surname"
+    const val givenName = "givenname"
+    const val version =  "version"
+    const val tenantId = "tenantId"
 }
 
 
@@ -53,11 +57,26 @@ private class SecRoleCodeImpl(val role: String) : SecRoleCode {
 }
 
 class ClaimsPrincipal(@JsonIgnore val claims : Claims) : UserPrincipal {
+    private val _mainRefType : String = claims.getFirst(ClaimTypes.mainRefType) ?: ""
+    private val _tillFlag : String = claims.getFirst(ClaimTypes.tillFlag) ?: "N"
+    private val _securityLevel : Int = claims.getFirst(ClaimTypes.securityLevel)?.toIntOrNull() ?: 0
+    private val _departmentId : Int = claims.getFirst(ClaimTypes.departmentId)?.toIntOrNull() ?: 0
+    private val _branchId : Int = claims.getFirst(ClaimTypes.branchId)?.toIntOrNull() ?: 0
     private val _tenantId : Int = claims.getFirst(ClaimTypes.tenantId)?.toIntOrNull() ?: 0
     private val _uniqueName : String = claims.getFirst(ClaimTypes.uniqueName) ?: ""
     private val _name : String = claims.getFirst(ClaimTypes.givenName) ?: ""
     private val _surname : String = claims.getFirst(ClaimTypes.surname) ?: ""
     private val _roles = claims.getAll(ClaimTypes.role).map { SecRoleCodeImpl(it) }
+
+    fun getMainRefType() : String = _mainRefType
+
+    fun getTillFlag() : String = _tillFlag
+
+    fun getDepartmentId() : Int = _departmentId
+
+    fun getSecurityLevel() : Int = _securityLevel
+
+    fun getBranchId() : Int = _branchId
 
     override fun getName(): String  = _uniqueName
 
