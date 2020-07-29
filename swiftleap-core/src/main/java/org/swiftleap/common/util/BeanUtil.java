@@ -200,7 +200,6 @@ public class BeanUtil {
             map.put(pd.getName(), m.invoke(bean));
         }
         return map;
-
     }
 
     public static void assign(Object bean, final Map<String, Object> props)

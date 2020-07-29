@@ -242,9 +242,10 @@ public class UpdateServiceImpl implements UpdateService {
             String f = file.toLowerCase();
             if (f.matches(".*rules.*exe")
                     || f.matches("phd.*exe")
+                    || f.matches(".*service.*exe")
+                    || f.matches(".*cat.*exe")
                     || f.equals("run.exe")
                     || f.equals("run.sh")
-                    || f.equals("service.exe")
                     || f.equals("service.sh")) {
                 try {
                     String cmd = currentRelativePath.resolve(file).toString();
