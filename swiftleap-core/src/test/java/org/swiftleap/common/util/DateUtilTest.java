@@ -20,6 +20,19 @@ public class DateUtilTest {
         return cal.get(Calendar.YEAR);
     }
 
+    @Test
+    public void testTime() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(DateUtil.make("55"));
+        Assert.assertEquals(0, cal.get(Calendar.MILLISECOND));
+        System.out.println(cal.getTime());
+
+
+        cal = Calendar.getInstance();
+        cal.setTime(DateUtil.make("2000/01/02"));
+        Assert.assertEquals(0, cal.get(Calendar.MILLISECOND));
+        System.out.println(cal.getTime());
+    }
 
     @Test
     public void testMake() {
