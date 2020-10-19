@@ -21,8 +21,11 @@ import org.swiftleap.common.types.EffectivePeriod;
 import org.swiftleap.common.types.Period;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -84,6 +87,10 @@ public class DateUtil {
         return calendar.getTime();
     }
 
+    private static boolean isTimeSep(char c) {
+        return c == ':' || c == 'h' || c == 'H';
+    }
+
     /**
      * @param anyForm date
      * @return new date instance initialized to the start of the day i.e. hour = 0, minutes = 0, seconds = 0, ms = 0
@@ -92,18 +99,41 @@ public class DateUtil {
         if (anyForm == null || anyForm.isEmpty()) {
             return null;
         }
-        int year;
-        int month;
-        int day;
 
-        if (anyForm.length() == 8) {
+        anyForm = anyForm.trim();
+
+        int year = 1900;
+        int month = 0;
+        int day = 1;
+        int hour = 0;
+        int min = 0;
+        int sec = 0;
+
+        if(anyForm.length() <= 2) {
+            min = Integer.parseInt(anyForm);
+        }
+        else if(anyForm.length() == 3) {
+            hour = Integer.parseInt(anyForm.substring(0, 1));
+            min = Integer.parseInt(anyForm.substring(1, 3));
+        }
+        else if(anyForm.length() == 4) {
+            hour = Integer.parseInt(anyForm.substring(0, 2));
+            min = Integer.parseInt(anyForm.substring(2, 4));
+        }
+        else if (anyForm.length() == 5 && isTimeSep(anyForm.charAt(2))) {
+            hour = Integer.parseInt(anyForm.substring(0, 2));
+            min = Integer.parseInt(anyForm.substring(3, 5));
+        } else if (anyForm.length() == 8 && isTimeSep(anyForm.charAt(2)) && isTimeSep(anyForm.charAt(5))) {
+            hour = Integer.parseInt(anyForm.substring(0, 2));
+            min = Integer.parseInt(anyForm.substring(3, 5));
+            sec = Integer.parseInt(anyForm.substring(6, 8));
+        }
+        else if (anyForm.length() == 8) {
             year = Integer.parseInt(anyForm.substring(0, 4));
             month = Integer.parseInt(anyForm.substring(4, 6)) - 1;
             day = Integer.parseInt(anyForm.substring(6, 8));
-        } else {
-            String dateString = anyForm.length() > 10 ? anyForm.substring(0, 10) : anyForm;
-
-            String[] splits = dateString.split("[\\-\\\\/. ]");
+        } else if (anyForm.length() == 10) {
+            String[] splits = anyForm.split("[\\-\\\\/. ]");
 
             if (splits.length < 3)
                 throw new IllegalArgumentException("Invalid date format: " + anyForm);
@@ -115,9 +145,13 @@ public class DateUtil {
             year = Integer.parseInt(splits[0]);
             month = Integer.parseInt(splits[1]) - 1;
             day = Integer.parseInt(splits[2]);
+        } else {
+            TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(anyForm);
+            Instant i = Instant.from(ta);
+            return Date.from(i);
         }
 
-        return make(year, month, day);
+        return make(year, month, day, hour, min, sec);
     }
 
     /**
@@ -140,10 +174,24 @@ public class DateUtil {
     public static Date make(int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
         try {
-            calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH, month);
-            calendar.set(Calendar.DAY_OF_MONTH, day);
+            calendar.set(year, month, day);
             setToStartOfDay(calendar);
+            return calendar.getTime();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid date parameters specified: year = " + year + " month = " + month + " day = " + day);
+        }
+    }
+
+    /**
+     * @param year
+     * @param month 0 is the first month
+     * @param day   1 is the first day
+     * @return new date instance initialized to the start of the day i.e. hour = 0, minutes = 0, seconds = 0, ms = 0
+     */
+    public static Date make(int year, int month, int day, int hour, int min, int sec) {
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.set(year, month, day, hour, min, sec);
             return calendar.getTime();
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid date parameters specified: year = " + year + " month = " + month + " day = " + day);

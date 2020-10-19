@@ -97,6 +97,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         //Create the context
         scx = SecurityContext.createContext(user, tenant, "guest");
         SecurityContext.push(scx);
+
         return true;
     }
 
