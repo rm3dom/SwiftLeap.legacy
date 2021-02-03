@@ -101,7 +101,7 @@ public class SecurityContext {
         return SecurityAppCtx.getEncryptionController();
     }
 
-    private static SecurityContext getTopContext() {
+    public static SecurityContext getTopContext() {
         Deque<SecurityContext> deque = tl.get();
         if (deque.isEmpty()) return createSystemContext();
         return deque.peekFirst();
@@ -141,6 +141,19 @@ public class SecurityContext {
     }
 
     public static <T> T doImpersonation(Tenant t, Supplier<T> runnable) {
+        if (t == null)
+            throw new SecurityException("Invalid tenant");
+        try (val ignored = impersonate(t)) {
+            return runnable.get();
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            log.error("Error while impersonating", ex);
+            throw new ServiceException(ex);
+        }
+    }
+
+    public static <T> T doImpersonation(SecurityContext t, Supplier<T> runnable) {
         if (t == null)
             throw new SecurityException("Invalid tenant");
         try (val ignored = impersonate(t)) {
@@ -303,12 +316,19 @@ public class SecurityContext {
         return () -> pop();
     }
 
+
     private static Impersonation impersonate(Tenant tenant) {
         checkTenantImpersonationAllowed(tenant);
         SecurityContext sc = getTopContext();
         if (sc == null)
             throw new ServiceException("Not allowed with null context");
         push(createContext(sc.channel, sc.principal, tenant, sc.roles));
+        return () -> pop();
+    }
+
+    private static Impersonation impersonate(SecurityContext sc) {
+        checkTenantImpersonationAllowed(sc.principal);
+        push(sc);
         return () -> pop();
     }
 

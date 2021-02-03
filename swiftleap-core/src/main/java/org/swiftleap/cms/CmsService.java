@@ -16,15 +16,20 @@
  */
 package org.swiftleap.cms;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Created by ruans on 2017/06/03.
  */
 public interface CmsService {
     CmsFolderNode getRoot();
 
+    @Nullable
     CmsFolderNode getFolder(String absolutePath);
 
+    @Nullable
     CmsNode getItem(String absolutePath);
 
+    @Nullable
     CmsNode getItem(CmsFolderNode folder, String relativePath);
 }
